@@ -186,6 +186,12 @@ int main()
 
   puzzleSetTile(puzzle, 0, 0, 5);
 
+
+  puzzle_t* empty = puzzleNew();
+  fprintf(stdout, "Empty:\n");
+  puzzlePrint(empty, stdout);
+  puzzleDelete(empty);
+
   fprintf(stdout, "Regular:\n");
   puzzlePrint(puzzle, stdout);
   puzzleDelete(puzzle);
