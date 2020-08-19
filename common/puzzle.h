@@ -34,11 +34,22 @@ typedef struct puzzle puzzle_t;
  * creates a new sudoku puzzle struct
  * user is responsible for calling puzzleDelete on the given structure
  * 
- * input: file pointer to load sudoku puzzle from and the dimensions
+ * input:
  * 
  * output: completed puzzle_t struct
  */
-puzzle_t* puzzleNew(FILE* fp);
+puzzle_t* puzzleNew();
+
+/**************** puzzleLoad() ****************/
+/*
+ * loads in a sudoku puzzle from a file to a given puzzle_t* struct
+ * 
+ * input: puzzle_t* struct, file pointer to sudoku
+ * 
+ * output: the puzzle loaded into the puzzle_t* struct
+ */
+void
+puzzleLoad(puzzle_t* puzzle, FILE* fp);
 
 /**************** puzzleGetTile() ****************/
 /*

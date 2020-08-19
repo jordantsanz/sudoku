@@ -23,134 +23,80 @@ int main()
   //error handling
   FILE* fp;
   puzzle_t* puzzle;
+  puzzle = puzzleNew();
   //too many rows in source file
   fp = fopen("../examplepuzzles/puzzletoomanyrows.txt", "r");
   if (fp == NULL){
     fprintf(stderr, "Couldn't open file.\n");
     exit(1);
   }
-  puzzle = puzzleNew(fp);
+  puzzleLoad(puzzle, fp);
   fclose(fp);
-  if (puzzle == NULL){
-    fprintf(stdout, "Too many rows in source file error handled.\n");
-  }
-  else{
-    fprintf(stderr, "Too many rows error not handled.\n");
-    exit(2);
-  }
 
   //too few rows in source file
   fp = fopen("../examplepuzzles/puzzlenotenoughrows.txt", "r");
   if (fp == NULL){
     fprintf(stderr, "Couldn't open file.\n");
-    exit(1);
+    exit(3);
   }
-  puzzle = puzzleNew(fp);
+  puzzleLoad(puzzle, fp);
   fclose(fp);
-  if (puzzle == NULL){
-    fprintf(stdout, "Too few rows in source file error handled.\n");
-  }
-  else{
-    fprintf(stderr, "Too few rows error not handled.\n");
-    exit(2);
-  }
 
   //too many columns in source file
   fp = fopen("../examplepuzzles/puzzletoomanycolumns.txt", "r");
   if (fp == NULL){
     fprintf(stderr, "Couldn't open file.\n");
-    exit(1);
+    exit(5);
   }
-  puzzle = puzzleNew(fp);
+  puzzleLoad(puzzle, fp);
   fclose(fp);
-  if (puzzle == NULL){
-    fprintf(stdout, "Too many columns in source file error handled.\n");
-  }
-  else{
-    fprintf(stderr, "Too many columns error not handled.\n");
-    exit(3);
-  }
 
   //too few columns in source file
   fp = fopen("../examplepuzzles/puzzlenotenoughcolumns.txt", "r");
   if (fp == NULL){
     fprintf(stderr, "Couldn't open file.\n");
-    exit(1);
+    exit(7);
   }
-  puzzle = puzzleNew(fp);
+  puzzleLoad(puzzle, fp);
   fclose(fp);
-  if (puzzle == NULL){
-    fprintf(stdout, "Too few columns in source file error handled.\n");
-  }
-  else{
-    fprintf(stderr, "Too few columns error not handled.\n");
-    exit(3);
-  }
 
   //two conscutive digits in source file / value > 9
   fp = fopen("../examplepuzzles/puzzleconsecutivedigits.txt", "r");
   if (fp == NULL){
     fprintf(stderr, "Couldn't open file.\n");
-    exit(1);
+    exit(9);
   }
-  puzzle = puzzleNew(fp);
+  puzzleLoad(puzzle, fp);
   fclose(fp);
-  if (puzzle == NULL){
-    fprintf(stdout, "Consecutive digits in source file error handled.\n");
-  }
-  else{
-    fprintf(stderr, "Consecutive digits error not handled.\n");
-    exit(4);
-  }
 
   //non-digit, non-space character in source file
   fp = fopen("../examplepuzzles/puzzlewrongchar.txt", "r");
   if (fp == NULL){
     fprintf(stderr, "Couldn't open file.\n");
-    exit(1);
+    exit(11);
   }
-  puzzle = puzzleNew(fp);
+  puzzleLoad(puzzle, fp);
   fclose(fp);
-  if (puzzle == NULL){
-    fprintf(stdout, "Wrong character in source file error handled.\n");
-  }
-  else{
-    fprintf(stderr, "Wrong character digits error not handled.\n");
-    exit(4);
-  }
 
   //realtest
   fp = fopen("../examplepuzzles/puzzle1.txt", "r");
   if (fp == NULL){
     fprintf(stderr, "Couldn't open file.\n");
-    exit(1);
+    exit(13);
   }
-  puzzle = puzzleNew(fp);
+  puzzleLoad(puzzle, fp);
   fclose(fp);
-  if (puzzle != NULL){
-    fprintf(stdout, "Successfully created puzzle.\n");
-  }
-  else{
-    fprintf(stderr, "Failed to create puzzle.\n");
-    exit(5);
-  }
 
   //realtest wierd whitespace
   puzzle_t* puzzleWhitespace;
+  puzzleWhitespace = puzzleNew();
   fp = fopen("../examplepuzzles/puzzlewhitespace.txt", "r");
   if (fp == NULL){
     fprintf(stderr, "Couldn't open file.\n");
-    exit(1);
+    exit(15);
   }
-  puzzleWhitespace = puzzleNew(fp);
+  puzzleLoad(puzzleWhitespace, fp);
   fclose(fp);
-  if (puzzle != NULL){
-    fprintf(stdout, "Successfully created whitespace puzzle.\n");
-  }
-  else{
-    fprintf(stderr, "Failed to create whitespace puzzle.\n");
-    exit(5);
-  }
 
   //puzzleGetTile
   //error handling
@@ -162,7 +108,7 @@ int main()
   }
   else{
     fprintf(stderr, "Puzzle NULL error not handled.\n");
-    exit(6);
+    exit(17);
   }
 
   //row OOB
@@ -172,7 +118,7 @@ int main()
   }
   else{
     fprintf(stderr, "Row OOB error not handled.\n");
-    exit(7);
+    exit(18);
   }
   value = puzzleGetTile(puzzle, 9, 0);
   if (value == -1){
@@ -180,7 +126,7 @@ int main()
   }
   else{
     fprintf(stderr, "Row OOB error not handled.\n");
-    exit(7);
+    exit(18);
   }
 
   //column OOB
@@ -190,7 +136,7 @@ int main()
   }
   else{
     fprintf(stderr, "Column OOB error not handled.\n");
-    exit(8);
+    exit(19);
   }
   value = puzzleGetTile(puzzle, 0, 9);
   if (value == -1){
@@ -198,7 +144,7 @@ int main()
   }
   else{
     fprintf(stderr, "Column OOB error not handled.\n");
-    exit(8);
+    exit(19);
   }
 
   //realtest
@@ -208,8 +154,37 @@ int main()
   }
   else{
     fprintf(stderr, "Failed to get tile.\n");
-    exit(9);
+    exit(20);
   }
+
+  //puzzleSetTile
+  //error handling
+  //puzzle null
+  puzzleSetTile(NULL, 0, 0, 0);
+
+  //row OOB
+  puzzleSetTile(puzzle, -1, 0, 0);
+  puzzleSetTile(puzzle, 9, 0, 0);
+
+  //column OOB
+  puzzleSetTile(puzzle, 0, -1, 0);
+  puzzleSetTile(puzzle, 0, 9, 0);
+
+  //value OOB
+  puzzleSetTile(puzzle, 0, 0, -1);
+  puzzleSetTile(puzzle, 0, 0, 10);
+
+  //realtest
+  puzzleSetTile(puzzle, 0, 0, 1);
+  if (puzzleGetTile(puzzle, 0, 0) == 1){
+    fprintf(stdout, "Succesfully set tile.\n");
+  }
+  else{
+    fprintf(stderr, "Failed to set tile.\n");
+    exit(21);
+  }
+
+  puzzleSetTile(puzzle, 0, 0, 5);
 
   fprintf(stdout, "Regular:\n");
   puzzlePrint(puzzle, stdout);

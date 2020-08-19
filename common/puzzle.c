@@ -37,7 +37,7 @@ typedef struct puzzle {
  * See puzzle.h for details
  */
 puzzle_t*
-puzzleNew(FILE* fp){
+puzzleNew(){
 
   puzzle_t* puzzle = malloc(sizeof(puzzle_t));
   if (puzzle == NULL){
@@ -65,6 +65,25 @@ puzzleNew(FILE* fp){
     array[i] = subArray;
   }
 
+  for (int i = 0; i < 9; i++){
+    for(int j = 0; j< 9; j++){
+      array[i][j] = 0;
+    }
+  }
+
+  puzzle->grid = array;
+
+  return puzzle;
+
+}
+
+/**************** puzzleNew() ****************/
+/*
+ * See puzzle.h for details
+ */
+void
+puzzleLoad(puzzle_t* puzzle, FILE* fp){
+
   char* line;
   char* original;
   int lineNum = 0;
@@ -82,40 +101,22 @@ puzzleNew(FILE* fp){
       if (isdigit(*line) != 0){
         if (lineNum > 8){
           fprintf(stderr, "Too many lines in source file.\n");
-          for (int i = 0; i < 9; i++){
-            free(array[i]);
-          }
-          free(original);
-          free(array);
-          free(puzzle);
-          return NULL;
+          return;
         }
         if (!singleDigit){
           singleDigit = true;
           foundDigit = true;
           if (numInLine > 8){
             fprintf(stderr, "Too many entries in line %d.\n", lineNum);
-            for (int i = 0; i < 9; i++){
-              free(array[i]);
-            }
-            free(original);
-            free(array);
-            free(puzzle);
-            return NULL;
+            return;
           }
           sscanf(line, "%d", &value);
-          array[lineNum][numInLine] = value;
+          puzzle->grid[lineNum][numInLine] = value;
           numInLine++;
         }
         else{
           fprintf(stderr, "Puzzle file has two consecutive digits.\n");
-          for (int i = 0; i < 9; i++){
-            free(array[i]);
-          }
-          free(original);
-          free(array);
-          free(puzzle);
-          return NULL;
+          return;
         }
       }
       else if (isspace(*line) != 0){
@@ -123,24 +124,12 @@ puzzleNew(FILE* fp){
       }
       else if (iscntrl(*line) == 0){
         fprintf(stderr, "Non-digit, non-space character in puzzle file.\n");
-        for (int i = 0; i < 9; i++){
-          free(array[i]);
-        }
-        free(original);
-        free(array);
-        free(puzzle);
-        return NULL;
+        return;
       }
     }
     if (numInLine < 9 && foundDigit){
       fprintf(stderr, "Too few entries in line %d.\n", lineNum);
-      for (int i = 0; i < 9; i++){
-        free(array[i]);
-      }
-      free(original);
-      free(array);
-      free(puzzle);
-      return NULL;
+      return;
     }
     if (foundDigit){
       lineNum++;
@@ -150,17 +139,8 @@ puzzleNew(FILE* fp){
 
   if (lineNum < 9){
     fprintf(stderr, "Too few lines in source file.\n");
-    for (int i = 0; i < 9; i++){
-      free(array[i]);
-    }
-    free(array);
-    free(puzzle);
-    return NULL;
+    return;
   }
-
-  puzzle->grid = array;
-
-  return puzzle;
 
 }
 
@@ -192,7 +172,7 @@ puzzleSetTile(puzzle_t* puzzle, int row, int column, int value){
     puzzle->grid[row][column] = value;
   }
   else{
-    fprintf(stderr, "Puzzle is null or row/column/value out of bounds\n");
+    fprintf(stderr, "Puzzle is null or row/column/value out of bounds.\n");
   }
 
 }
@@ -237,7 +217,7 @@ puzzleValidTile(puzzle_t* puzzle, int row, int column){
   int subGridRow;
   int subGridColumn;
   if (puzzle == NULL || row < 0 || row >= 9 || column < 0 || column >= 9){
-    fprintf(stderr, "Puzzle is null or row/column is out of bounds\n");
+    fprintf(stderr, "Puzzle is null or row/column is out of bounds.\n");
     return false;
   }
 
@@ -278,7 +258,7 @@ bool
 puzzleValidRow(puzzle_t* puzzle, int row){
 
   if (puzzle == NULL || row < 0 || row >= 9){
-    fprintf(stderr, "Puzzle is null or row is out of bounds\n");
+    fprintf(stderr, "Puzzle is null or row is out of bounds.\n");
     return false;
   }
 
@@ -312,7 +292,7 @@ bool
 puzzleValidColumn(puzzle_t* puzzle, int column){
 
   if (puzzle == NULL || column < 0 || column >= 9){
-    fprintf(stderr, "Puzzle is null or column is out of bounds\n");
+    fprintf(stderr, "Puzzle is null or column is out of bounds.\n");
     return false;
   }
 
@@ -346,7 +326,7 @@ bool
 puzzleValidSquare(puzzle_t* puzzle, int row, int column){
 
   if (puzzle == NULL || row < 0 || row >= 3 || column < 0 || column >= 3){
-    fprintf(stderr, "Puzzle is null or row/column is out of bounds\n");
+    fprintf(stderr, "Puzzle is null or row/column is out of bounds.\n");
     return false;
   }
 
