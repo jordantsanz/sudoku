@@ -101,6 +101,7 @@ puzzleLoad(puzzle_t* puzzle, FILE* fp){
       if (isdigit(*line) != 0){
         if (lineNum > 8){
           fprintf(stderr, "Too many lines in source file.\n");
+          free(original);
           return;
         }
         if (!singleDigit){
@@ -108,6 +109,7 @@ puzzleLoad(puzzle_t* puzzle, FILE* fp){
           foundDigit = true;
           if (numInLine > 8){
             fprintf(stderr, "Too many entries in line %d.\n", lineNum);
+            free(original);
             return;
           }
           sscanf(line, "%d", &value);
@@ -116,6 +118,7 @@ puzzleLoad(puzzle_t* puzzle, FILE* fp){
         }
         else{
           fprintf(stderr, "Puzzle file has two consecutive digits.\n");
+          free(original);
           return;
         }
       }
@@ -124,11 +127,13 @@ puzzleLoad(puzzle_t* puzzle, FILE* fp){
       }
       else if (iscntrl(*line) == 0){
         fprintf(stderr, "Non-digit, non-space character in puzzle file.\n");
+        free(original);
         return;
       }
     }
     if (numInLine < 9 && foundDigit){
       fprintf(stderr, "Too few entries in line %d.\n", lineNum);
+      free(original);
       return;
     }
     if (foundDigit){
