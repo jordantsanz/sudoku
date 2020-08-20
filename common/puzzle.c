@@ -415,3 +415,27 @@ puzzleDelete(puzzle_t* puzzle){
   free(puzzle);
 
 }
+
+bool checkPossible(puzzle_t* puzzle, int row, int column, int n) {
+  for (int y = 0; y < 9; y++) {
+    if (puzzleGetTile(puzzle, y, column) == n) {
+      return false;
+    }
+  }
+  for (int x = 0; x < 9; x++) {
+    if (puzzleGetTile(puzzle, row, x) == n) {
+      return false;
+    }
+  }
+  // find which box
+  int box_row = (row/3)*3;
+  int box_column = (column/3)*3;
+  for (int y = 0; y < 4; y++) {
+    for (int x = 0; x < 4; x++) {
+      if (puzzleGetTile(puzzle, box_row + 1, box_column + 1) == n) {
+        return false;
+      } 
+    }
+  }
+  return true;
+}
