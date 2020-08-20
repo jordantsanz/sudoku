@@ -4,7 +4,7 @@
 # CS50, Summer 2020
 
 # object files, and the target library
-OBJS = file.o
+OBJS = file.o memory.o
 LIB = libcs50.a
 
 # add -DNOSLEEP to disable the automatic sleep after web-page fetches
@@ -22,6 +22,7 @@ $(LIB): $(OBJS)
 
 # Dependencies: object files depend on header files
 file.o: file.h
+memory.o: memory.h
 
 .PHONY: clean
 

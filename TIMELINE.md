@@ -4,6 +4,9 @@ Deadlines:
 - DESIGN.md - August 21
 - Project - August 27
 
+Checklist:
+
+
 - Decide on a data structure
     - 2D array
     - 3D array

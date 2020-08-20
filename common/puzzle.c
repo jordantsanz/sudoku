@@ -3,7 +3,7 @@
  * 
  * See puzzle.h for details
  * 
- * Author: Alexandre Hamel
+ * Author: Alexandre Hamel, James Verschleiser, Jordan Sanz
  * Date: 08/17/2020
  * Class: CS50
  * Professor: Xia Zhou
@@ -330,20 +330,26 @@ puzzleValidColumn(puzzle_t* puzzle, int column){
 bool
 puzzleValidSquare(puzzle_t* puzzle, int row, int column){
 
+  // check to make sure that puzzle is valid and row and columns are in bounds
   if (puzzle == NULL || row < 0 || row >= 3 || column < 0 || column >= 3){
     fprintf(stderr, "Puzzle is null or row/column is out of bounds.\n");
     return false;
   }
 
-  int check[9];
+  int check[9];  // initialize array of numbers
+
   for (int i = 0; i < 9; i++){
-    check[i] = 0;
+    check[i] = 0;  // set every number in array to 0
   }
 
-  int value;
-  for (int i = 0; i < 3; i++){
-    for (int j = 0; j < 3; j++){
-      value = puzzle->grid[(row * 3) + i][(column * 3) + j];
+  int value;  // value
+
+  for (int i = 0; i < 3; i++){  // looping through rows in square
+
+    for (int j = 0; j < 3; j++){  // looping through columns in square
+
+      value = puzzle->grid[(row * 3) + i][(column * 3) + j];  // grab value at that row and column
+
       if (value != 0){
         if (check[value - 1] == 0){
           check[value - 1] = 1;

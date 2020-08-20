@@ -3,7 +3,7 @@
  * 
  * contains the data structure puzzle which houses the sudoku puzzle struct and functions to operate on it
  * 
- * Author: Alexandre Hamel
+ * Author: Alexandre Hamel, James Verschleiser, Jordan Sanz
  * Date: 08/17/2020
  * Class: CS50
  * Professor: Xia Zhou
@@ -53,7 +53,7 @@ puzzleLoad(puzzle_t* puzzle, FILE* fp);
 
 /**************** puzzleGetTile() ****************/
 /*
- * sets a value in tile within the puzzle
+ * gets a value in tile within the puzzle
  * row and colums go 0-8
  * 
  * input: puzzle_t struct, int row, int column

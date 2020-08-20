@@ -3,7 +3,7 @@
  * 
  * usage: ./puzzletest
  * 
- * Author: Alexandre Hamel
+ * Author: Alexander Hamel, James Verschleiser, Jordan Sanz
  * Date: 08/18/2020
  * Class: CS50
  * Professor: Xia Zhou

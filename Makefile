@@ -9,6 +9,7 @@ all:
 	make -C libcs50
 	make -C common
 	make -C test
+	make -C create
 
 ############## valgrind all programs ##########
 valgrind: all
@@ -21,3 +22,4 @@ clean:
 	make -C libcs50 clean
 	make -C common clean
 	make -C test clean
+	make -C create clean
