@@ -22,7 +22,7 @@ int main() {
     }
     puzzle_t* puzzle = puzzleNew();
     puzzleLoad(puzzle, Fp);
-    solve(puzzle, "solveOutput.txt");
+    solve(puzzle, 0, "solveOutput.txt");
     fclose(Fp);
     puzzleDelete(puzzle);
     return 0;
