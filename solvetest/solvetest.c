@@ -25,6 +25,10 @@ int main() {
     solve(puzzle, 0, "solveOutput.txt");
     fclose(Fp);
     puzzleDelete(puzzle);
+
+    puzzle = puzzleNew();
+    solve(puzzle, 0, "solveOutput2.txt");
+    puzzleDelete(puzzle);
     return 0;
 }
 
