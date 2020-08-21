@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include "../common/puzzle.h"
 
-int solve(puzzle_t* puzzle, int solved_count, char* filename) {
+int solve(puzzle_t* puzzle, int solved_count, FILE* fp) {
     for (int y = 0; y < 9; y++) {
         for (int x = 0; x < 9; x++) {
             if (puzzleGetTile(puzzle, y, x) == 0) {
@@ -18,7 +18,7 @@ int solve(puzzle_t* puzzle, int solved_count, char* filename) {
                     if (checkPossible(puzzle, y, x, i) == true) {
                         puzzleSetTile(puzzle, y, x, i);
                         if (solved_count < 2) {
-                            solved_count = solve(puzzle, solved_count, filename);
+                            solved_count = solve(puzzle, solved_count, fp);
                         }
                         puzzleSetTile(puzzle, y, x, 0);
                     }
@@ -27,27 +27,19 @@ int solve(puzzle_t* puzzle, int solved_count, char* filename) {
             }
         }
     }
-    FILE* Fp = fopen(filename, "w");
-    if (Fp == NULL) {
-        fprintf(stderr, "File could not be written in\n");
-        exit(1);
-    }
-    puzzlePrint(puzzle, Fp);
-    fprintf(Fp, "\n");
+    puzzlePrint(puzzle, fp);
+    fprintf(fp, "\n");
     if (solved_count == 1) {
         if (puzzleSolved(puzzle) == true) {
-            fprintf(Fp, "More than one solution\n");
-        }
-        else {
-            fprintf(Fp, "Only one solution\n");
+            fprintf(fp, "More than one solution\n");
         }
     }
     else if (solved_count == 0) {
+
         if (puzzleSolved(puzzle) == false) {
-            fprintf(Fp, "Puzzle has no solution\n");
+            fprintf(fp, "Puzzle has no solution\n");
         }
     }
-    fclose(Fp);
     solved_count++;
     return solved_count;
 }

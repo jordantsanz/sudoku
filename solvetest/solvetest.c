@@ -22,8 +22,12 @@ int main() {
     }
     puzzle_t* puzzle = puzzleNew();
     puzzleLoad(puzzle, Fp);
-    solve(puzzle, 0, "solveOutput.txt");
+    solve(puzzle, 0, stdout);
     fclose(Fp);
+    puzzleDelete(puzzle);
+
+    puzzle = puzzleNew();
+    solve(puzzle, 0, stdout);
     puzzleDelete(puzzle);
     return 0;
 }
