@@ -8,11 +8,11 @@
 all: 
 	make -C libcs50
 	make -C common
-	make -C test
+	make -C puzzletest
 
 ############## valgrind all programs ##########
 valgrind: all
-	make -C test valgrind
+	make -C puzzletest valgrind
 
 ############## clean  ##########
 clean:
@@ -20,4 +20,4 @@ clean:
 	rm -fr data
 	make -C libcs50 clean
 	make -C common clean
-	make -C test clean
+	make -C puzzletest clean
