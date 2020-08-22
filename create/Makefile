@@ -1,35 +1,31 @@
-# Makefile for create program
+# Makefile for solve library
 #
-# Author: Alexandre Hamel, James Verschleiser, Jordan Sanz
-# Date: 08/18/2020
+# Author: James Verschleiser
+# Date: 08/19/2020
 # Class: CS50
 # Professor: Xia Zhou
 
-PROG = create
+# object files, and the target library
 OBJS = create.o
-LIBS = ../libcs50/libcs50.a ../common/common.a
+LIB = create.a ../common/common.a ../solve/solve.a
 
-CFLAGS = -Wall -pedantic -std=c11 -ggdb $(TESTING) -I../libcs50 -I../common
+# add -DMEMTEST for memory tracking report in indexer
+# (and run `make clean; make` whenever you change this)
+FLAGS = # -DMEMTEST
+
+CFLAGS = -Wall -pedantic -std=c11 -ggdb $(FLAGS) -I../libcs50 -I../common -I../solve
 CC = gcc
-MAKE = MAKE
 
-$(PROG): $(OBJS) $(LIBS)
-	$(CC) $(CFLAGS) $^ -o $@
+# Build the library by archiving object files
+$(LIB): $(OBJS)
+	ar cr $(LIB) $(OBJS)
 
+# Dependencies: object files depend on header files
+create.o: create.h ../libcs50/memory.h
 
+.PHONY: clean
 
-create.o: ../libcs50/memory.h
-
-
-.PHONY: test valgrind clean
-
-# test: testing.sh
-# 	bash -v testing.sh &> testing.out
-
-valgrind: $(PROG)
-	valgrind ./$(PROG)
-
+# clean up after our compilation
 clean:
-	rm -rf *.dSYM 
-	rm -f *~ *.o
-	rm -f $(PROG)
+	rm -f core
+	rm -f create.a *~ *.o

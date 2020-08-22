@@ -33,4 +33,4 @@
  * 
  * output: completed sudoku puzzle
  */
-void solve(puzzle_t* puzzle);
+int solve(puzzle_t* puzzle, int solved_count, FILE* fp);

@@ -14,14 +14,22 @@
 #include "../libcs50/memory.h"
 #include "puzzle.h"
 #include "list.h"
+#include "solve.h"
 
 /***************** prototypes *************/
-void fillInDiagSquare(puzzle_t* puzzle, int startX, int startY);
+puzzle_t* create(int num_tiles);
 int fillInSquare(puzzle_t* puzzle, int startX, int startY);
 int inputSquareTile(puzzle_t* puzzle, int x, int y, list_t* list);
+void puzzleRemoveTiles(puzzle_t* puzzle, int num_tiles);
+puzzle_t* makePuzzleCopy(puzzle_t* puzzle);
 
-int main(const int argc, const char* argv[])
+puzzle_t* create(int num_tiles)
 {
+    // check for if number of tiles is set, or default
+    if (num_tiles == -1) {
+        num_tiles = 40;
+    }
+
     set_seed(); // set randomized seed
 
     puzzle_t* puzzle = assertp(puzzleNew(), "Puzzle could not be created.");  // puzzle
@@ -32,21 +40,20 @@ int main(const int argc, const char* argv[])
         printf("Puzzle not filled in correctly. \n");
     };
 
-    // print the puzzle
-    puzzlePrint(puzzle, stdout);
-
     // check that the puzzle solved
     if(!puzzleSolved(puzzle)){
         printf("Puzzle is not valid. :( \n");
     }
-    else{
-        printf("Puzzle is valid! \n");
+
+    // remove tiles from puzzle
+    puzzleRemoveTiles(puzzle, num_tiles);
+
+    // check to make sure one solution only:
+    if(solve(puzzle, 0, stdout) != 1){
+        printf("There was more than one solution. \n");
     }
 
-    // delete the puzzle for now
-    puzzleDelete(puzzle);
-
-    return 0;
+    return puzzle;
 
 }
 
@@ -99,3 +106,65 @@ int inputSquareTile(puzzle_t* puzzle, int x, int y, list_t* list)
     return -1; 
 }
 
+void puzzleRemoveTiles(puzzle_t* puzzle, int num_tiles)
+{
+
+    int x = -1; // x row to grab tile from
+    int y = -1; // y col to grab tile from
+    int tile = 0; // value of tile
+    int removed_tiles = 0; // number of removed tiles
+    puzzle_t* puzzleCopy;
+
+    // while there are still tiles to remove
+    while(removed_tiles < num_tiles){
+
+        // selects random, filled value from puzzle
+        while (tile == 0){
+
+            x = rand() % 9; // choose random number 0-8
+            y = rand() % 9;  // choose random number 0-8
+
+            tile = puzzleGetTile(puzzle, x, y);
+        }
+
+        puzzleSetTile(puzzle, x, y, 0); // attempt to set as 0
+        puzzleCopy = assertp(makePuzzleCopy(puzzle), "copy of puzzle could not be created");
+        
+
+        if(solve(puzzleCopy, 0, stdin) != 1){  // if not only one solution
+            puzzleSetTile(puzzle, x, y, tile); // reset tile
+        }
+
+        else{
+            removed_tiles += 1; // successful removal
+        }
+
+        puzzleDelete(puzzleCopy);
+
+        tile = 0;
+
+    }
+
+}
+
+
+puzzle_t* makePuzzleCopy(puzzle_t* puzzle)
+{
+    puzzle_t* puzzleCopy = puzzleNew();
+    int tile;
+
+    // loop through all x
+    for (int x = 0; x < 9; x++){
+
+        // loop through all y
+        for(int y = 0; y < 9; y++){
+
+            // grab value and set value in copy
+            tile = puzzleGetTile(puzzle, x, y);
+            puzzleSetTile(puzzleCopy, x, y, tile);
+            
+        }
+    }
+
+    return puzzleCopy;
+}
