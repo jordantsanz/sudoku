@@ -52,59 +52,55 @@ And some helper modules that provide data structures:
  2. *list* of an array of numbers that acts as a stack, allowing for a randomized selection of numbers
 
 ### Pseudo code for logic/algorithmic flow
-
+```
 1. execute from keyboard as shown in the User Interface
 
-For `create`:
-2. Set a random seed based off of the current time
-3. Create a blank puzzle
-4. Call *fillInSquare*, which begins to fill in the squares of the puzzle by:
-    5. Creating a `list_t list` by calling *list_new*
-    6. Calling *inputSquareTile*, passing in the starting x and y values of (0,0); this function does the following for every tile:
-        7. Initialize value and return value variables
-        8. Call *list_pop* to get a random value from 1-9, and while there are still numbers in the list to pop:
-            9. Set the value of the number at those x and y coordinates of that tile to be the random, popped value
-            10. If the puzzle is still valid after that value is entered:
-                11. If the y coordinate isn't at the end of the puzzle (on the last column):
-                    12. recursively call *inputSquareTile* and add one to the y coordinate, and set `returnValue` as the return value of this call
-                13. If the y coordinate is on the last column, but the x coordinate isn't on the last row:
-                    14. recursively call *inputSquareTile* and add one to the x coordinate, and set `returnValue` to the return value of this call
-                15. If the x coordinate is on the last row and the y coordinate is on the last column:
-                    16. Set `returnValue` to 0
-                17. If `returnValue` is 0:
-                    18. Delete the `list` by calling *list_delete* and return `returnValue`
-            19. If the set value is not valid, then simply continue in the while loop
-        20. If there are no values in the list left, then:
-            21. Delete the `list` by calling *list_delete*
-            22. Set the current tile's value of the puzzle back to `0`
-            23. Return -1
-            24. The program then backtraces until a puzzle is generated successfully, and *fillInSquare* returns.
-25. Once the puzzle has been generated correctly, begin to remove numbers by doing the following:
-    26. Select a random x-y pairing
-    27. Attempt to remove that number and replace it with 0, and save the removed number temporarily
-        28. Pass the puzzle as it stands to solver
-        29. If the puzzle is still solveable, keep the 0 in the empty spot, discard the temporarily saved number
-            30. continue with another random x-y pairing until enough numbers are removed
-        31. Else, replace the number and start again with a random x-y pairing
-32. Once enough numbers have been removed, print the puzzle to stdout
-33. Exit successfully
+For `create`:  
+2. Set a random seed based off of the current time   
+3. Create a blank puzzle  
+4. Call *fillInSquare*, which begins to fill in the squares of the puzzle by:    
+    5. Creating a `list_t list` by calling *list_new*   
+    6. Calling *inputSquareTile*, passing in the starting x and y values of (0,0); this function does the following for every tile:   
+        7. Initialize value and return value variables   
+        8. Call *list_pop* to get a random value from 1-9, and while there are still numbers in the list to pop:   
+            9. Set the value of the number at those x and y coordinates of that tile to be the random, popped value   
+            10. If the puzzle is still valid after that value is entered:   
+                11. If the y coordinate isn't at the end of the puzzle (on the last column):   
+                    12. recursively call *inputSquareTile* and add one to the y coordinate, and set `returnValue` as the return value of this call   
+                13. If the y coordinate is on the last column, but the x coordinate isn't on the last row:   
+                    14. recursively call *inputSquareTile* and add one to the x coordinate, and set `returnValue` to the return value of this call   
+                15. If the x coordinate is on the last row and the y coordinate is on the last column:   
+                    16. Set `returnValue` to 0   
+                17. If `returnValue` is 0:   
+                    18. Delete the `list` by calling *list_delete* and return `returnValue`   
+            19. If the set value is not valid, then simply continue in the while loop   
+        20. If there are no values in the list left, then:   
+            21. Delete the `list` by calling *list_delete*   
+            22. Set the current tile's value of the puzzle back to `0`   
+            23. Return -1   
+            24. The program then backtraces until a puzzle is generated successfully, and *fillInSquare* returns.   
+25. Once the puzzle has been generated correctly, begin to remove numbers by doing the following:   
+    26. Select a random x-y pairing   
+    27. Attempt to remove that number and replace it with 0, and save the removed number temporarily   
+        28. Pass the puzzle as it stands to solver   
+        29. If the puzzle is still solveable, keep the 0 in the empty spot, discard the temporarily saved number   
+            30. continue with another random x-y pairing until enough numbers are removed   
+        31. Else, replace the number and start again with a random x-y pairing   
+32. Once enough numbers have been removed, print the puzzle to stdout   
+33. Exit successfully   
 
-For `solve`:
-2. loops through x-values from 0-8
-    3. loops through y-values from 0-8
-        4. if the current square is empty
-            5. for int from 1-9
-                6. if the int doesn't break the rules of sudoku
-                    7. set the current square to that number
-                    8. if multiple solutions haven't been found yet
-                        9. run solve recursively with this new board
-                    10. set the current square equal to 0
-            11. return current number of solutions
-12. if the puzzle is solved
-    13. prints out the solved board
-    14. increments solved_count
-15. return current number of solutions
-
+For `solve`:   
+2. loops through x-values from 0-8   
+    3. loops through y-values from 0-8   
+        4. if the current square is empty   
+            5. for int from 1-9   
+                6. if the int doesn't break the rules of sudoku   
+                    7. set the current square to that number   
+                    8. run solve recursively with this new board   
+                    9. set the current square equal to 0   
+            10. return   
+11. prints out the solved board   
+```
 
 **solveable** means that each number is a unique number in that row, column, and square. The puzzle is visualized as a 9x9 square of 3x3 squares. A solveable puzzle means that there is a solution where each tile in the puzzle can be filled with a number from 1-9, where each number is unique in its row, column, and square. A solveable puzzle is also not completed, and has at least 40 missing numbers from the puzzle. 
 
