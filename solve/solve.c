@@ -27,8 +27,11 @@ int solve(puzzle_t* puzzle, int solved_count, FILE* fp) {
             }
         }
     }
-    puzzlePrint(puzzle, fp);
-    fprintf(fp, "\n");
+    if (puzzleSolved(puzzle) == true) {
+        puzzlePrint(puzzle, fp);
+        fprintf(fp, "\n");
+        solved_count++;
+    }
     if (solved_count == 1) {
         if (puzzleSolved(puzzle) == true) {
             fprintf(fp, "More than one solution\n");
@@ -40,6 +43,5 @@ int solve(puzzle_t* puzzle, int solved_count, FILE* fp) {
             fprintf(fp, "Puzzle has no solution\n");
         }
     }
-    solved_count++;
     return solved_count;
 }

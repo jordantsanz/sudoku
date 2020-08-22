@@ -77,10 +77,14 @@ For `solve`:
             5. for int from 1-9
                 6. if the int doesn't break the rules of sudoku
                     7. set the current square to that number
-                    8. run solve recursively with this new board
-                    9. set the current square equal to 0
-            10. return
-11. prints out the solved board
+                    8. if multiple solutions haven't been found yet
+                        9. run solve recursively with this new board
+                    10. set the current square equal to 0
+            11. return current number of solutions
+12. if the puzzle is solved
+    13. prints out the solved board
+    14. increments solved_count
+15. return current number of solutions
 
 
 **solveable** means that each number is a unique number in that row, column, and square. The puzzle is visualized as a 9x9 square of 3x3 squares. A solveable puzzle means that there is a solution where each tile in the puzzle can be filled with a number from 1-9, where each number is unique in its row, column, and square. A solveable puzzle is also not completed, and has at least 40 missing numbers from the puzzle. 
