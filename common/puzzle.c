@@ -421,3 +421,15 @@ puzzleDelete(puzzle_t* puzzle){
   free(puzzle);
 
 }
+
+bool checkPossible(puzzle_t* puzzle, int row, int column, int n) {
+  puzzleSetTile(puzzle, row, column, n);
+  if (puzzleValidTile(puzzle, row, column)) {
+    puzzleSetTile(puzzle, row, column, 0);
+    return true;
+  }
+  else {
+    puzzleSetTile(puzzle, row, column, 0);
+    return false;
+  }
+}
