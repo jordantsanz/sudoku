@@ -11,7 +11,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "puzzle.h"
+#include "../common/puzzle.h"
 
 /* **************************************** */
 int main() 
