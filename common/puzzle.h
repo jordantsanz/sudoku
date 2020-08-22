@@ -153,3 +153,13 @@ void puzzlePrint(puzzle_t* puzzle, FILE* fp);
  * output: memory used by puzzle_t struct returned to memory
  */
 void puzzleDelete(puzzle_t* puzzle);
+
+/**************** puzzleDelete() ****************/
+/*
+ * checks to see if a number works
+ * 
+ * input: puzzle_t struct, row number, column number, the guess
+ * 
+ * output: true or false
+ */
+bool checkPossible(puzzle_t* puzzle, int row, int column, int n);
