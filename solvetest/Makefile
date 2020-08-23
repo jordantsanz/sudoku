@@ -1,6 +1,6 @@
 # Makefile for solve testing portion of final project sudoku
 #
-# Author: James Verschleiser
+# Author: Alex Hamel, James Verschleiser, Jordan Sanz
 # Date: 08/19/2020
 # Class: CS50
 # Professor: Xia Zhou
