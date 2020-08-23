@@ -28,4 +28,5 @@ create.o: create.h ../libcs50/memory.h
 # clean up after our compilation
 clean:
 	rm -f core
-	rm -f create.a *~ *.o
+	rm -f create.a
+	rm -f *~ *.o

@@ -30,6 +30,11 @@ puzzle_t* create(int num_tiles)
         num_tiles = 40;
     }
 
+    else if (num_tiles > 55){
+        printf("Cannot remove that many tiles. \n");
+        return NULL;
+    }
+
     set_seed(); // set randomized seed
 
     puzzle_t* puzzle = assertp(puzzleNew(), "Puzzle could not be created.");  // puzzle
@@ -38,11 +43,15 @@ puzzle_t* create(int num_tiles)
     // fill-in all squares
     if(fillInSquare(puzzle, 0, 0) == -1){
         printf("Puzzle not filled in correctly. \n");
+        puzzleDelete(puzzle);
+        return NULL;
     };
 
     // check that the puzzle solved
     if(!puzzleSolved(puzzle)){
         printf("Puzzle is not valid. :( \n");
+        puzzleDelete(puzzle);
+        return NULL;
     }
 
     // remove tiles from puzzle
@@ -51,6 +60,8 @@ puzzle_t* create(int num_tiles)
     // check to make sure one solution only:
     if(solve(puzzle, 0, stdout) != 1){
         printf("There was more than one solution. \n");
+        puzzleDelete(puzzle);
+        return NULL;
     }
 
     return puzzle;
@@ -59,7 +70,7 @@ puzzle_t* create(int num_tiles)
 
 int fillInSquare(puzzle_t* puzzle, int startX, int startY)
 {
-    list_t* list = list_new();
+    list_t* list = assertp(list_new(), "A new list could not be created");
     int returnValue = inputSquareTile(puzzle, startX, startY, list);
     return returnValue;
 
@@ -79,12 +90,12 @@ int inputSquareTile(puzzle_t* puzzle, int x, int y, list_t* list)
 
             // not on last column, so move one right
             if (y != 8){
-                returnVal = inputSquareTile(puzzle, x, y+1, list_new());
+                returnVal = inputSquareTile(puzzle, x, y+1, assertp(list_new(), "A new list could not be created"));
             }
 
             // on last column but not last row, so down one row and back to first column
             else if (y == 8 && x != 8){
-                returnVal = inputSquareTile(puzzle, x+1, 0, list_new());
+                returnVal = inputSquareTile(puzzle, x+1, 0, assertp(list_new(), "A new list could not be created"));
             }
 
             // last column and last row; this is base case
@@ -150,7 +161,7 @@ void puzzleRemoveTiles(puzzle_t* puzzle, int num_tiles)
 
 puzzle_t* makePuzzleCopy(puzzle_t* puzzle)
 {
-    puzzle_t* puzzleCopy = puzzleNew();
+    puzzle_t* puzzleCopy = assertp(puzzleNew(), "Could not allocate memory for the puzzle. \n");
     int tile;
 
     // loop through all x

@@ -28,6 +28,8 @@ int main(const int argc, const char* argv[])
         num_tiles = -1;
     }
 
+    create(56);
+
     // try and make random puzzle
     puzzle_t* puzzle = create(num_tiles);
     
@@ -35,22 +37,32 @@ int main(const int argc, const char* argv[])
     // try and make another random puzzle
     puzzle_t* puzzle2 = create(num_tiles);
 
+    waitFor(1);
+
+    // try a hard puzzle!
+    puzzle_t* puzzle3 = create(55);
+
     // print the puzzles
     FILE* fp1 = fopen("output/puzzle1output.txt", "w");
     FILE* fp2 = fopen("output/puzzle2output.txt", "w");
+    FILE* fp5 = fopen("output/puzzle3output.txt", "w");
 
     FILE* fp3 = fopen("output/puzzle1solved.txt", "w");
     FILE* fp4 = fopen("output/puzzle2solved.txt", "w");
+    FILE* fp6 = fopen("output/puzzle3solve.txt", "w");
     puzzlePrint(puzzle, fp1);
     puzzlePrint(puzzle2, fp2);
+    puzzlePrint(puzzle3, fp5);
 
     // try and solve the puzzles
     int count1 = solve(puzzle, 0, fp3);
     int count2 = solve(puzzle2, 0, fp4);
+    int count3 = solve(puzzle3, 0, fp6);
 
     // print num of solutions
     printf("Number of sols in 1: %d \n", count1);
     printf("Number of sols in 2: %d \n", count2);
+    printf("Number of sols in 3: %d \n", count3);
 
     puzzleDelete(puzzle);
     puzzleDelete(puzzle2);
