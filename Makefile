@@ -10,6 +10,7 @@ all:
 	make -C common
 	make -C test
 	make -C create
+	make -C solve
 
 ############## valgrind all programs ##########
 valgrind: all
@@ -23,3 +24,4 @@ clean:
 	make -C common clean
 	make -C test clean
 	make -C create clean
+	make -C solve
