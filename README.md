@@ -1,32 +1,15 @@
-# project-groupname-pending
-## Alex Hamel, James Verschleiser, Jordan Sanz
+# project-groupnamepending, CS50 Summer 2020, Final Project- Sudoku solve
+## Authors: Alexandre Hamel, Jordan Sanz, James Verschleiser
+## Date: 08/22/2020
+## Class: CS50
+## Professor: Xia Zhou
 
-### sudoku
+To build, run `make`.
 
+To clean up, run `make clean`.
 
-### Usage
+To test, run `make test`.
 
-(functions list)
-```c
+To run executable in the top level directory (the one this read me is in), run `./puzzle`.
 
-```
-
-### Implementation
-
-A full implementation spec is found in the IMPLEMENTATION.md file.
-
-### Assumptions
-
-
-### Files
-
-A full list of files used is found in the IMPLEMENTATION.md spec.
-
-### Exit Codes:
-
-
-### Compilation
-
-
-### Testing
-
+Furthur documentation and README.md's are in subdirectories and DESIGN.md, IMPLEMENTATION.md, and TESTING.md in this directory

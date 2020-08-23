@@ -1,37 +1,22 @@
-# Makefile for testing portion of final project sudoku
+# Makefile for Testing subdirectory CS50 Final Project Sudoku
 #
-# Author: Alexandre Hamel
-# Date: 08/18/2020
-# Class: CS50
-# Professor: Xia Zhou
+# CS 50, Summer 2020
 
-PROG = puzzletest
-OBJS = puzzletest.o
-LIBS = ../common/common.a ../libcs50/libcs50.a -lm
+.PHONY: all valgrind clean
 
-# uncomment the following to turn on push/pop queue messages, along with notices about unaccessible pages
-#TESTING=-DQUEUETEST
+############## default: make all libs and programs ##########
+all: 
+	make -C puzzletest
+	make -C solvetest
 
-CFLAGS = -Wall -pedantic -std=c11 -ggdb $(TESTING) -I../libcs50 -I../common
-VFLAGS = --leak-check=full --show-leak-kinds=all -s
-CC = gcc
-MAKE = make
+############## valgrind all programs ##########
+valgrind: all
+	make -C puzzletest valgrind
+	make -C solvetest valgrind
 
-$(PROG): $(OBJS)
-	$(CC) $(CFLAGS) $^ $(LIBS) -o $@
-
-puzzletest.o: ../common/common.a ../libcs50/libcs50.a
-
-.PHONY: test valgrind clean
-
-test: $(PROG)
-	./$(PROG)
-
-valgrind: $(PROG)
-	valgrind $(VFLAGS) ./$(PROG)
-
+############## clean  ##########
 clean:
-	rm -rf *.dSYM
-	rm -f *~ *.o
-	rm -f $(PROG)
-	rm -f core
+	rm -f *~
+	rm -fr data
+	make -C puzzletest clean
+	make -C solvetest clean

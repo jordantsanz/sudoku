@@ -24,4 +24,4 @@ clean:
 	make -C common clean
 	make -C test clean
 	make -C create clean
-	make -C solve
+	make -C solve clean
