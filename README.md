@@ -8,6 +8,8 @@ To build, run `make`.
 
 To clean up, run `make clean`.
 
-Solve is implemented as a library that can be used by other files.
+To test, run `make test`.
 
-Solve function is ran by calling solve with a puzzle, an integer (should be 0), and a file passed in as arguments.
+To run executable in the top level directory (the one this read me is in), run `./puzzle`.
+
+Furthur documentation and README.md's are in subdirectories and DESIGN.md, IMPLEMENTATION.md, and TESTING.md in this directory

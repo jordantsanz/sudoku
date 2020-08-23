@@ -1,13 +1,13 @@
-# Makefile for solve testing portion of final project sudoku
+# Makefile for testing portion of final project sudoku
 #
 # Author: Alex Hamel, James Verschleiser, Jordan Sanz
 # Date: 08/19/2020
 # Class: CS50
 # Professor: Xia Zhou
 
-PROG = solvetest
-OBJS = solvetest.o
-LIBS = ../solve/solve.a ../common/common.a ../libcs50/libcs50.a -lm
+PROG = puzzletest
+OBJS = puzzletest.o
+LIBS = ../common/common.a ../libcs50/libcs50.a -lm
 
 # uncomment the following to turn on push/pop queue messages, along with notices about unaccessible pages
 #TESTING=-DQUEUETEST
@@ -20,7 +20,7 @@ MAKE = make
 $(PROG): $(OBJS)
 	$(CC) $(CFLAGS) $^ $(LIBS) -o $@
 
-solvetest.o: ../solve/solve.a ../common/common.a ../libcs50/libcs50.a
+puzzletest.o: ../common/common.a ../libcs50/libcs50.a
 
 .PHONY: test valgrind clean
 
