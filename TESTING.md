@@ -1,5 +1,7 @@
 ### puzzle
 
+testing is in test/puzzletest
+
 0. Test puzzleLoad with a too many rows
 
 0. Test puzzleLoad with too few rows
