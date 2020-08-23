@@ -3,7 +3,7 @@
  * 
  * contains the function that solves sudoku puzzles
  * 
- * Author: James Verschleiser
+ * Author: Alex Hamel, James Verschleiser, Jordan Sanz
  * Date: 08/19/2020
  * Class: CS50
  * Professor: Xia Zhou
