@@ -11,13 +11,13 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "../common/puzzle.h"
-#include "../solve/solve.h"
+#include "../../common/puzzle.h"
+#include "../../solve/solve.h"
 
 int main() 
 {
     // test on normal solvable puzzle
-    FILE* Fp = fopen("../examplepuzzles/puzzle1.txt", "r");
+    FILE* Fp = fopen("../../examplepuzzles/puzzle1.txt", "r");
     if (Fp == NULL) {
         fprintf(stderr, "File couldn't be opened\n");
         return 1;
@@ -42,7 +42,7 @@ int main()
     fprintf(stdout, "ran test 2\n");
 
     // test on puzzle with no solutions
-    FILE* Fp2 = fopen("../examplepuzzles/unsolveablepuzzle1.txt", "r");
+    FILE* Fp2 = fopen("../../examplepuzzles/unsolveablepuzzle1.txt", "r");
     if (Fp2 == NULL) {
         fprintf(stderr, "File couldn't be opened\n");
         return 1;
@@ -59,7 +59,7 @@ int main()
     fprintf(stdout, "ran test 3\n");
 
     // test on puzzle with multiple solutions
-    FILE* Fp3 = fopen("../examplepuzzles/puzzlemultiplesolutions.txt", "r");
+    FILE* Fp3 = fopen("../../examplepuzzles/puzzlemultiplesolutions.txt", "r");
     if (Fp3 == NULL) {
         fprintf(stderr, "File couldn't be opened\n");
         return 1;
