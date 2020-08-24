@@ -9,9 +9,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "solve.h"
 #include "../common/puzzle.h"
 
-int solve(puzzle_t* puzzle, int solved_count, FILE* fp) 
+int solve(puzzle_t* puzzle, puzzle_t* solvedHolder, int solved_count, FILE* fp) 
 {
     // loop through all of the squares is the sudoku puzzle
     for (int y = 0; y < 9; y++) {
@@ -29,7 +30,7 @@ int solve(puzzle_t* puzzle, int solved_count, FILE* fp)
 
                         // if the puzzle doesn't already have multiple solutions than recurse with this more filled in puzzle
                         if (solved_count < 2) {
-                            solved_count = solve(puzzle, solved_count, fp);
+                            solved_count = solve(puzzle, solvedHolder, solved_count, fp);
                         }
 
                         // if we get back to here then solution has been found so set back to 0
@@ -37,33 +38,17 @@ int solve(puzzle_t* puzzle, int solved_count, FILE* fp)
                     }
                 }
                 return solved_count;
+                printf("Hit");
 
             }
         }
     }
     // if the puzzle is currently solved then print it out
     if (puzzleSolved(puzzle) == true) {
-        puzzlePrint(puzzle, fp);
-        fprintf(fp, "\n");
+        if (solvedHolder != NULL){
+            puzzleCopy(puzzle, solvedHolder);
+        }
         solved_count++;
-    }
-
-    // if this is the second solution than print that there are multiple solutions
-    if (solved_count == 2) {
-
-        if (puzzleSolved(puzzle) == true) {
-            fprintf(fp, "More than one solution\n");
-        }
-
-    }
-
-    // if it reaches here with no prior solutions and isn't current solved then it is unsolvable
-    // some unsolvable puzzles won't reach this point
-    if (solved_count == 0) {
-        if (puzzleSolved(puzzle) == false) {
-            fprintf(fp, "Puzzle has no solution\n");
-        }
-
     }
 
     return solved_count;

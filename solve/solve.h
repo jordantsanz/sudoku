@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "../common/puzzle.h"
 
 /**************** file-local global variables ****************/
 /* none */
@@ -33,4 +34,4 @@
  * 
  * output: completed sudoku puzzle
  */
-int solve(puzzle_t* puzzle, int solved_count, FILE* fp);
+int solve(puzzle_t* puzzle, puzzle_t* solvedHolder, int solved_count, FILE* fp);

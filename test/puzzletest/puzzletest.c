@@ -25,7 +25,7 @@ int main()
   puzzle_t* puzzle;
   puzzle = puzzleNew();
   //too many rows in source file
-  fp = fopen("../examplepuzzles/puzzletoomanyrows.txt", "r");
+  fp = fopen("../../examplepuzzles/puzzletoomanyrows.txt", "r");
   if (fp == NULL){
     fprintf(stderr, "Couldn't open file.\n");
     exit(1);
@@ -34,7 +34,7 @@ int main()
   fclose(fp);
 
   //too few rows in source file
-  fp = fopen("../examplepuzzles/puzzlenotenoughrows.txt", "r");
+  fp = fopen("../../examplepuzzles/puzzlenotenoughrows.txt", "r");
   if (fp == NULL){
     fprintf(stderr, "Couldn't open file.\n");
     exit(1);
@@ -43,7 +43,7 @@ int main()
   fclose(fp);
 
   //too many columns in source file
-  fp = fopen("../examplepuzzles/puzzletoomanycolumns.txt", "r");
+  fp = fopen("../../examplepuzzles/puzzletoomanycolumns.txt", "r");
   if (fp == NULL){
     fprintf(stderr, "Couldn't open file.\n");
     exit(1);
@@ -52,7 +52,7 @@ int main()
   fclose(fp);
 
   //too few columns in source file
-  fp = fopen("../examplepuzzles/puzzlenotenoughcolumns.txt", "r");
+  fp = fopen("../../examplepuzzles/puzzlenotenoughcolumns.txt", "r");
   if (fp == NULL){
     fprintf(stderr, "Couldn't open file.\n");
     exit(1);
@@ -61,7 +61,7 @@ int main()
   fclose(fp);
 
   //two conscutive digits in source file / value > 9
-  fp = fopen("../examplepuzzles/puzzleconsecutivedigits.txt", "r");
+  fp = fopen("../../examplepuzzles/puzzleconsecutivedigits.txt", "r");
   if (fp == NULL){
     fprintf(stderr, "Couldn't open file.\n");
     exit(1);
@@ -70,7 +70,7 @@ int main()
   fclose(fp);
 
   //non-digit, non-space character in source file
-  fp = fopen("../examplepuzzles/puzzlewrongchar.txt", "r");
+  fp = fopen("../../examplepuzzles/puzzlewrongchar.txt", "r");
   if (fp == NULL){
     fprintf(stderr, "Couldn't open file.\n");
     exit(1);
@@ -79,7 +79,7 @@ int main()
   fclose(fp);
 
   //realtest
-  fp = fopen("../examplepuzzles/puzzle1.txt", "r");
+  fp = fopen("../../examplepuzzles/puzzle1.txt", "r");
   if (fp == NULL){
     fprintf(stderr, "Couldn't open file.\n");
     exit(1);
@@ -90,7 +90,7 @@ int main()
   //realtest wierd whitespace
   puzzle_t* puzzleWhitespace;
   puzzleWhitespace = puzzleNew();
-  fp = fopen("../examplepuzzles/puzzlewhitespace.txt", "r");
+  fp = fopen("../../examplepuzzles/puzzlewhitespace.txt", "r");
   if (fp == NULL){
     fprintf(stderr, "Couldn't open file.\n");
     exit(1);
@@ -255,7 +255,7 @@ int main()
 
   test = puzzleNew();
   puzzle_t* solved = puzzleNew();
-  fp = fopen("../examplepuzzles/puzzlesolve1.txt", "r");
+  fp = fopen("../../examplepuzzles/puzzlesolve1.txt", "r");
   if (fp == NULL){
     fprintf(stderr, "Couldn't open file.\n");
     exit(1);
@@ -272,6 +272,18 @@ int main()
   }
 
   puzzleDelete(test);
+
+  puzzle_t* copy = puzzleNew();
+  puzzleCopy(solved, copy);
+  for (int i = 0; i < 9; i++){
+    for (int j = 0; j < 9; j++){
+      if (puzzleGetTile(solved, i, j) != puzzleGetTile(copy, i, j)){
+        fprintf(stderr, "Error with puzzleCopy.\n");
+        exit(12);
+      }
+    }
+  }
+  fprintf(stdout, "puzzleCopy works.\n");
   
   puzzle_t* empty = puzzleNew();
   fprintf(stdout, "Empty:\n");
@@ -282,13 +294,17 @@ int main()
   puzzlePrint(puzzle, stdout);
   puzzleDelete(puzzle);
 
+  fprintf(stdout, "Whitespace:\n");
+  puzzlePrint(puzzleWhitespace, stdout);
+  puzzleDelete(puzzleWhitespace);
+
   fprintf(stdout, "Solved:\n");
   puzzlePrint(solved, stdout);
   puzzleDelete(solved);
 
-  fprintf(stdout, "Whitespace:\n");
-  puzzlePrint(puzzleWhitespace, stdout);
-  puzzleDelete(puzzleWhitespace);
+  fprintf(stdout, "Solved Copy:\n");
+  puzzlePrint(copy, stdout);
+  puzzleDelete(copy);
 
   return 0;
 

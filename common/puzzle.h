@@ -144,6 +144,16 @@ bool checkPossible(puzzle_t* puzzle, int row, int column, int n);
  */
 bool puzzleSolved(puzzle_t* puzzle);
 
+/**************** puzzleCopy() ****************/
+/*
+ * copies puzzle 1 to puzzle 2 tile by tile
+ * 
+ * input: puzzle_t struct puzzle1 (original), puzzle_t struct puzzle2 (to be copied to)
+ * 
+ * output: puzzle 2 containing a copy of puzzle 1
+ */
+void puzzleCopy(puzzle_t* puzzle1, puzzle_t* puzzle2);
+
 /**************** puzzlePrint() ****************/
 /*
  * prints the sudoku puzzle to given file

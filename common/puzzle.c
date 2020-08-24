@@ -177,6 +177,11 @@ puzzleLoad(puzzle_t* puzzle, FILE* fp){
     return;
   }
 
+  if (!puzzleValid(puzzle)){
+    fprintf(stderr, "Puzzle file does not contain a valid sudoku puzzle.\n");
+    return;
+  }
+
 }
 
 /**************** puzzleGetTile() ****************/
@@ -484,6 +489,23 @@ puzzleSolved(puzzle_t* puzzle){
   }
 
   return puzzleValid(puzzle);
+
+}
+
+/**************** puzzleCopy() ****************/
+/*
+ * See puzzle.h for details
+ */
+void
+puzzleCopy(puzzle_t* puzzle1, puzzle_t* puzzle2){
+
+  if (puzzle1 != NULL && puzzle2 != NULL){
+    for (int i = 0; i < 9; i++){
+      for (int j = 0; j < 9; j++){
+        puzzleSetTile(puzzle2, i, j, puzzleGetTile(puzzle1, i, j));
+      }
+    }
+  }
 
 }
 

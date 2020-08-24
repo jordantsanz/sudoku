@@ -10,6 +10,6 @@ To clean up, run `make clean`.
 
 To test, run `make test`.
 
-To run executable in the top level directory (the one this read me is in), run `./puzzle`.
+To run executable in the top level directory (the one this read me is in), run `./sudoku`.
 
 Furthur documentation and README.md's are in subdirectories and DESIGN.md, IMPLEMENTATION.md, and TESTING.md in this directory

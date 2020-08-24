@@ -116,6 +116,7 @@ puzzletest.c:
 9: Error with puzzleValidTile
 10: Error with checkPossible
 11: Error with puzzleSolved
+12: Error with puzzleCopy
 
 #### Resource Management
 

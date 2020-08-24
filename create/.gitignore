@@ -1,5 +1,3 @@
 *.o
-create
 core
 createExtra.c
-create.a
