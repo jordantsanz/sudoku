@@ -78,7 +78,7 @@ void swap(int numberList[], int i, int j)
 }
 
 /*********************************** list_pop *************************/
-
+// code adapted from geeksforgeeks.com
 int list_pop(list_t* list)
 {   
     if (list->top == -1){ // then at end of stack
