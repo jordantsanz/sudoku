@@ -5,8 +5,10 @@
 PROG = sudoku
 OBJS = sudoku.o ./solve/solve.o ./create/create.o ./common/puzzle.o ./common/list.o ./libcs50/file.o
 LIBS = ./libcs50/libcs50.a ./common/common.a -lm
+TEST = ./examplepuzzles/puzzle1.txt
 
 CFLAGS = -Wall -pedantic -std=c11 -ggdb -I./libcs50 -I./common
+VFLAGS = --leak-check=full --show-leak-kinds=all -s
 CC = gcc
 MAKE = make
 
@@ -30,7 +32,9 @@ sudoku.o: ./libcs50/file.h ./libcs50/memory.h ./common/puzzle.h ./common/list.h 
 ############## valgrind all programs ##########
 valgrind: all
 	make -C test valgrind
-
+	valgrind $(VFLAGS) ./sudoku create
+	valgrind $(VFLAGS) ./sudoku solve < $(TEST)
+	
 ############## clean  ##########
 clean:
 	rm -f *~
