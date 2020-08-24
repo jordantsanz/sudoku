@@ -39,6 +39,7 @@ valgrind: all
 clean:
 	rm -f *~
 	rm -fr data
+	rm -f *.o
 	rm -f sudoku
 	make -C libcs50 clean
 	make -C common clean
