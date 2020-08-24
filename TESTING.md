@@ -69,4 +69,14 @@ Testing for `create` is as follows:
 
 3. Check to see if each puzzle created passes `solve`
 
+### solve
 
+Testing for `solve` is as follows:
+
+0. Test on normal solvable puzzle
+
+1. Test on empty puzzle
+
+2. Test on puzzle with no solutions
+
+3. Test on puzzle with multiple solutions
