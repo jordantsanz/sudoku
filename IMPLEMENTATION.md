@@ -1,7 +1,10 @@
+# IMPLEMENTATION.md - Sudoku Final Project
+## Alex Hamel, James Verschleiser, Jordan Sanz
+
 ### puzzle
 
 #### Overview
-This is the data structure that holds the actual sudoku puzzle and has functions to operate on it. These functions include creating a bvlank puzzle, loading the puzzle in from a file, getters and setters for the puzzle, a series of functions to see if the puzzle is valid, if an individual tile is valid, if a row is valid, if a column is valid, if a 3x3 square is valid, if a puzzle would still be valid after inserting a new number, if the puzzle is solved, a print function, and a delete function for the structure. These fucntions are used internally in the file and also by create and solve to faciliate the process of checking for validity within the rules of the game of sudoku, namely each row, column, and 3x3 square may only have the numbers 1-9 appear once in each.
+This is the data structure that holds the actual sudoku puzzle and has functions to operate on it. These functions include creating a blank puzzle, loading the puzzle in from a file, getters and setters for the puzzle, a series of functions to see if the puzzle is valid, if an individual tile is valid, if a row is valid, if a column is valid, if a 3x3 square is valid, if a puzzle would still be valid after inserting a new number, if the puzzle is solved, a print function, and a delete function for the structure. These fucntions are used internally in the file and also by create and solve to faciliate the process of checking for validity within the rules of the game of sudoku, namely each row, column, and 3x3 square may only have the numbers 1-9 appear once in each.
 
 #### Pseudocode
 puzzleNew()
@@ -123,6 +126,65 @@ Puzzle array takes up the minimum amount of space necessary. All memory are free
 
 Only things puzzle.c stores longer than the execution of its code is if you print the puzzle to file. That file will keep the printed puzzle.
 
+### list
+
+`list` is a data structure `list_t` that holds numbers 1-9 in a random order. It also has a `capacity` and a `top`, that keep track of the size of the list and where the next number is to pop, respectively. It is implemented as an `array` of `ints` that functions like a *stack*, allowing `create` to pop a number from the end of the `list`. It has a variety of functions that create and delete the `list`, and pop a number from the end of the list. `list` also includes helper functions to ensure that the numbers in `list` are in a random order; these set a random seed, reset a random seed, and swap numbers in a list. Each function's pseudocode is described in more detail below:
+
+
+#### Pseudocode
+
+##### list_t* list_new()
+
+`list_new` creates a new `list_t` pointer by allocating memory for it, then filling it with each number 1-9 in a random order. It takes no parameters, and it returns a pointer to a new `list`. It has the following pseudocode:
+
+1. Initialize a `list_t* list` by allocating memory for it
+2. Allocate memory for the `numberList` array in the `list`
+3. Initialize the `capacity` and `top`
+4. Fill each slot in the `numberList` array with a number 1-9 without repeating
+5. For each index in the list, looping backwards:
+    6. Select another random index from the list
+    7. Call *swap*  to swap the two values at those two indices in the list
+8. Call *reset_seed* to reset the rand function
+9. Return the `list`
+
+##### void swap(int numberList[], int i, int j)
+
+`swap` is a helper function used by `list_new` to swap values at indices of a `numberList`. It takes three parameters: `int numberList[]`, `int i`, and `int j`, and does not return anything. It has the following pseudocode:
+
+1. set `int temp` to `numberList[i]`
+2. set `numberList[i]` to `numberList[j]`
+3. set `numberList[j]` to `temp`
+
+##### int list_pop(list_t* list)
+
+`list_pop` is a function that serves to return the last item in a `list_t list`. It works as a stack, and it takes only the `list_t list` it is removing from. It has the following pseudocode:
+
+1. Check to see if `top` is -1
+2. If not, subtract one from the `capacity` of the `list`
+3. Return the number at the index of `top` and subtract one from `top`
+
+Error handling:
+
+* if top is -1, then return -1, saying that the list is empty
+
+##### void list_delete(list_t* list)
+
+`list_delete` serves to delete a `list_t list` and free any memory that has been allocated to it. It takes one parameter, being the `list_t* list`. It has the following pseudocode:
+
+1. Free the `numberList` of the `list`
+2. Free the `list` itself
+
+##### void reset_seed(int num)
+
+`reset_seed` is a function that serves to reset the `srand` seed, that allows the `rand` function to work. It takes the current time and takes the mod of it with an `int num` passed in, and then multiplies by that `num`. 
+
+##### void set_seed(int num)
+
+`set_seed` sets the `srand` seed initially with the current time of when the program is run. It does this by passing in `time` from the `time.h` module. 
+
+##### Data structure
+
+`list` is a data structure in itself that is implemented as a stack. It holds 9 numbers, each being a unique number 1-9. It is dynamically allocated as well, so it must be freed with `list_delete`. It has three components: a `numberList`, which is an array of `ints` that holds the numbers; a `top`, which keeps track of the last index of the list; and a `capacity`, which keeps track of how large the list is. It is implemented in `create` to add random numbers to the sudoku board. 
 
 ## Solve
 

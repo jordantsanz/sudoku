@@ -37,8 +37,8 @@ int solve(puzzle_t* puzzle, puzzle_t* solvedHolder, int solved_count, FILE* fp)
                         puzzleSetTile(puzzle, y, x, 0);
                     }
                 }
+                
                 return solved_count;
-                printf("Hit");
 
             }
         }
