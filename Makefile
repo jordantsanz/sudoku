@@ -22,6 +22,7 @@ all:
 	make -C test
 	make -C create
 	make -C solve
+	make -C python
 	make sudoku
 
 $(PROG): $(OBJS)
@@ -46,3 +47,4 @@ clean:
 	make -C test clean
 	make -C create clean
 	make -C solve clean
+	make -C python clean
