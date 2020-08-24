@@ -14,7 +14,7 @@
 
 int solve(puzzle_t* puzzle, puzzle_t* solvedHolder, int solved_count, FILE* fp) 
 {
-    if (puzzle == NULL || solvedHolder == NULL || fp == NULL) {
+    if (puzzle == NULL || fp == NULL) {
         fprintf(stderr, "Invalid NULL arguments passed into solve function\n");
         exit(1);
     }
