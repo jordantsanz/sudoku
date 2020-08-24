@@ -51,9 +51,11 @@ testing is in test/puzzletest
 
 10. Test puzzleSolved on a unsolved and solved puzzle
 
-11. Test puzzlePrint to console
+11. Test puzzleCopy from the solved puzzle to an initially empty puzzle to see if it copies it over.
 
-12. Test puzzleDelete by running valgrind on ./puzzletest
+12. Test puzzlePrint to console
+
+13. Test puzzleDelete by running valgrind on ./puzzletest
 
 ### create
 

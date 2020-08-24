@@ -272,6 +272,18 @@ int main()
   }
 
   puzzleDelete(test);
+
+  puzzle_t* copy = puzzleNew();
+  puzzleCopy(solved, copy);
+  for (int i = 0; i < 9; i++){
+    for (int j = 0; j < 9; j++){
+      if (puzzleGetTile(solved, i, j) != puzzleGetTile(copy, i, j)){
+        fprintf(stderr, "Error with puzzleCopy.\n");
+        exit(12);
+      }
+    }
+  }
+  fprintf(stdout, "puzzleCopy works.\n");
   
   puzzle_t* empty = puzzleNew();
   fprintf(stdout, "Empty:\n");
@@ -282,13 +294,17 @@ int main()
   puzzlePrint(puzzle, stdout);
   puzzleDelete(puzzle);
 
+  fprintf(stdout, "Whitespace:\n");
+  puzzlePrint(puzzleWhitespace, stdout);
+  puzzleDelete(puzzleWhitespace);
+
   fprintf(stdout, "Solved:\n");
   puzzlePrint(solved, stdout);
   puzzleDelete(solved);
 
-  fprintf(stdout, "Whitespace:\n");
-  puzzlePrint(puzzleWhitespace, stdout);
-  puzzleDelete(puzzleWhitespace);
+  fprintf(stdout, "Solved Copy:\n");
+  puzzlePrint(copy, stdout);
+  puzzleDelete(copy);
 
   return 0;
 

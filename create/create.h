@@ -11,6 +11,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "../common/puzzle.h"
+#include "../common/list.h"
 
 
 /**************** file-local global variables ****************/

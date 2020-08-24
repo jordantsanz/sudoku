@@ -8,11 +8,13 @@
 all: 
 	make -C puzzletest
 	make -C solvetest
+	make -C createtest
 
 ############## valgrind all programs ##########
 valgrind: all
 	make -C puzzletest valgrind
 	make -C solvetest valgrind
+	make -C createtest valgrind
 
 ############## clean  ##########
 clean:
@@ -20,3 +22,4 @@ clean:
 	rm -fr data
 	make -C puzzletest clean
 	make -C solvetest clean
+	make -C createtest clean

@@ -11,10 +11,11 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <ctype.h>
+#include "create.h"
 #include "../libcs50/memory.h"
-#include "puzzle.h"
-#include "list.h"
-#include "solve.h"
+#include "../common/puzzle.h"
+#include "../common/list.h"
+#include "../solve/solve.h"
 
 /***************** prototypes *************/
 puzzle_t* create(int num_tiles);
@@ -58,8 +59,8 @@ puzzle_t* create(int num_tiles)
     puzzleRemoveTiles(puzzle, num_tiles);
 
     // check to make sure one solution only:
-    if(solve(puzzle, 0, stdout) != 1){
-        printf("There was more than one solution. \n");
+    if(solve(puzzle, NULL, 0, stdout) != 1){
+        printf("There wasn't only one solution. \n");
         puzzleDelete(puzzle);
         return NULL;
     }
@@ -124,7 +125,7 @@ void puzzleRemoveTiles(puzzle_t* puzzle, int num_tiles)
     int y = -1; // y col to grab tile from
     int tile = 0; // value of tile
     int removed_tiles = 0; // number of removed tiles
-    puzzle_t* puzzleCopy;
+    puzzle_t* copy;
 
     // while there are still tiles to remove
     while(removed_tiles < num_tiles){
@@ -139,10 +140,10 @@ void puzzleRemoveTiles(puzzle_t* puzzle, int num_tiles)
         }
 
         puzzleSetTile(puzzle, x, y, 0); // attempt to set as 0
-        puzzleCopy = assertp(makePuzzleCopy(puzzle), "copy of puzzle could not be created");
+        copy = assertp(puzzleNew(), "Could not allocate memory for puzzle copy.\n");
+        puzzleCopy(puzzle, copy);
         
-
-        if(solve(puzzleCopy, 0, stdin) != 1){  // if not only one solution
+        if(solve(copy, NULL, 0, stdin) != 1){  // if not only one solution
             puzzleSetTile(puzzle, x, y, tile); // reset tile
         }
 
@@ -150,32 +151,10 @@ void puzzleRemoveTiles(puzzle_t* puzzle, int num_tiles)
             removed_tiles += 1; // successful removal
         }
 
-        puzzleDelete(puzzleCopy);
+        puzzleDelete(copy);
 
         tile = 0;
 
     }
 
-}
-
-
-puzzle_t* makePuzzleCopy(puzzle_t* puzzle)
-{
-    puzzle_t* puzzleCopy = assertp(puzzleNew(), "Could not allocate memory for the puzzle. \n");
-    int tile;
-
-    // loop through all x
-    for (int x = 0; x < 9; x++){
-
-        // loop through all y
-        for(int y = 0; y < 9; y++){
-
-            // grab value and set value in copy
-            tile = puzzleGetTile(puzzle, x, y);
-            puzzleSetTile(puzzleCopy, x, y, tile);
-            
-        }
-    }
-
-    return puzzleCopy;
 }

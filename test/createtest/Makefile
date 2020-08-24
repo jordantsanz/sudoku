@@ -6,13 +6,10 @@
 # Professor: Xia Zhou
 
 PROG = createtest
-OBJS = createtest.o
-LIBS = ../create/create.a ../solve/solve.a ../common/common.a ../libcs50/libcs50.a -lm
+OBJS = createtest.o ../../create/create.o ../../solve/solve.o
+LIBS = ../../common/common.a ../../libcs50/libcs50.a -lm
 
-# uncomment the following to turn on push/pop queue messages, along with notices about unaccessible pages
-#TESTING=-DQUEUETEST
-
-CFLAGS = -Wall -pedantic -std=c11 -ggdb $(TESTING) -I../libcs50 -I../common -I../solve
+CFLAGS = -Wall -pedantic -std=c11 -ggdb -I../../libcs50 -I../../common
 VFLAGS = --leak-check=full --show-leak-kinds=all -s
 CC = gcc
 MAKE = make
@@ -20,7 +17,7 @@ MAKE = make
 $(PROG): $(OBJS)
 	$(CC) $(CFLAGS) $^ $(LIBS) -o $@
 
-createtest.o: ../create/create.a ../solve/solve.a ../common/common.a ../libcs50/libcs50.a
+createtest.o: ../../solve/solve.h ../../common/common.a ../../libcs50/libcs50.a
 
 .PHONY: test valgrind clean
 

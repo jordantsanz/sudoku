@@ -1,7 +1,7 @@
 /*
  * createtest.c - a test file for create
  * 
- * usage: ./solvetest
+ * usage: ./solvetest [num_tiles]
  * 
  * Author: Alex Hamel, James Verschleiser, Jordan Sanz
  * Date: 08/19/2020
@@ -26,6 +26,13 @@ int main(const int argc, const char* argv[])
     int num_tiles;
     if (argc == 1){
         num_tiles = -1;
+    }
+    else if (argc == 2){
+        num_tiles = atoi(argv[1]);
+    }
+    else{
+        fprintf(stderr, "Too many arguments. Usage: .createtest [num_tiles]\n");
+        exit(1);
     }
 
     create(56);
@@ -54,10 +61,19 @@ int main(const int argc, const char* argv[])
     puzzlePrint(puzzle2, fp2);
     puzzlePrint(puzzle3, fp5);
 
+    puzzle_t* puzzle1Solve = assertp(puzzleNew(), "Could not allocate memory for puzzle1Solve.\n");
+    puzzle_t* puzzle2Solve = assertp(puzzleNew(), "Could not allocate memory for puzzle2Solve.\n");
+    puzzle_t* puzzle3Solve = assertp(puzzleNew(), "Could not allocate memory for puzzle3Solve.\n");
     // try and solve the puzzles
-    int count1 = solve(puzzle, 0, fp3);
-    int count2 = solve(puzzle2, 0, fp4);
-    int count3 = solve(puzzle3, 0, fp6);
+    int count1 = solve(puzzle, puzzle1Solve, 0, fp3);
+    puzzlePrint(puzzle1Solve, fp3);
+    puzzleDelete(puzzle1Solve);
+    int count2 = solve(puzzle2, puzzle2Solve, 0, fp4);
+    puzzlePrint(puzzle2Solve, fp4);
+    puzzleDelete(puzzle2Solve);
+    int count3 = solve(puzzle3, puzzle3Solve, 0, fp6);
+    puzzlePrint(puzzle3Solve, fp6);
+    puzzleDelete(puzzle3Solve);
 
     // print num of solutions
     printf("Number of sols in 1: %d \n", count1);
@@ -66,6 +82,7 @@ int main(const int argc, const char* argv[])
 
     puzzleDelete(puzzle);
     puzzleDelete(puzzle2);
+    puzzleDelete(puzzle3);
 }
 
 // function taken from https://stackoverflow.com/questions/3930363/implement-time-delay-in-c

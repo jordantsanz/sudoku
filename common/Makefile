@@ -24,8 +24,6 @@ $(LIB): $(OBJS)
 puzzle.o: puzzle.h ../libcs50/file.h
 list.o: list.h ../libcs50/memory.h
 
-
-
 .PHONY: clean
 
 # clean up after our compilation
