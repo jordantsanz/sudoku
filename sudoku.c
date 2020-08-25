@@ -44,7 +44,7 @@ int main(const int argc, const char *argv[])
 void interface(char* arg) 
 {
     if (strcmp(arg, "create") == 0){
-        puzzle_t* created = create(40);
+        puzzle_t* created = create(40, NULL);
         puzzlePrint(created, stdout);
         puzzleDelete(created);
     }

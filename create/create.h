@@ -85,7 +85,7 @@ puzzle_t* makePuzzleCopy(puzzle_t* puzzle);
 /*
  * creates a random sudoku puzzle
  * 
- * input: None
+ * input: number of tiles removed, file pointer to print created puzzle (NULL if not needed)
  * 
  * output: a randomly created, solveable sudoku puzzle
  * 
@@ -95,4 +95,4 @@ puzzle_t* makePuzzleCopy(puzzle_t* puzzle);
  * - if user doesn't specify, -1 should be passed in
  * - because a pointer to a puzzle is returned, the user should call puzzleDelete() on the puzzle
  */
-puzzle_t* create(int num_tiles);
+puzzle_t* create(int num_tiles, FILE* fp);

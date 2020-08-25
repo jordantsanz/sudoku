@@ -35,19 +35,19 @@ int main(const int argc, const char* argv[])
         exit(1);
     }
 
-    create(56);
+    create(56, NULL);
 
     // try and make random puzzle
-    puzzle_t* puzzle = create(num_tiles);
+    puzzle_t* puzzle = create(num_tiles, NULL);
     
     waitFor(1);
     // try and make another random puzzle
-    puzzle_t* puzzle2 = create(num_tiles);
+    puzzle_t* puzzle2 = create(num_tiles, NULL);
 
     waitFor(1);
 
     // try a hard puzzle!
-    puzzle_t* puzzle3 = create(55);
+    puzzle_t* puzzle3 = create(55, NULL);
 
     // print the puzzles
     FILE* fp1 = fopen("output/puzzle1output.txt", "w");
