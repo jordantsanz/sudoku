@@ -50,7 +50,7 @@ int main(const int argc, const char *argv[])
 void interface(char* arg) 
 {
     if (strcmp(arg, "create") == 0){
-        puzzle_t* created = assertp(create(40), "Error generating a sudoku puzzle.\n");
+        puzzle_t* created = assertp(create(40, NULL), "Error generating a sudoku puzzle.\n");
         puzzlePrint(created, stdout);
         puzzleDelete(created);
     }

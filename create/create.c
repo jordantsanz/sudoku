@@ -18,13 +18,13 @@
 #include "../solve/solve.h"
 
 /***************** prototypes *************/
-puzzle_t* create(int num_tiles);
+puzzle_t* create(int num_tiles, FILE* fp);
 int fillInSquare(puzzle_t* puzzle, int startX, int startY);
 int inputSquareTile(puzzle_t* puzzle, int x, int y, list_t* list);
 void puzzleRemoveTiles(puzzle_t* puzzle, int num_tiles);
 puzzle_t* makePuzzleCopy(puzzle_t* puzzle);
 
-puzzle_t* create(int num_tiles)
+puzzle_t* create(int num_tiles, FILE* fp)
 {
     // check for if number of tiles is set, or default
     if (num_tiles == -1) {
@@ -63,6 +63,10 @@ puzzle_t* create(int num_tiles)
         printf("There wasn't only one solution. \n");
         puzzleDelete(puzzle);
         return NULL;
+    }
+
+    if (fp != NULL){
+        puzzlePrint(puzzle, fp);
     }
 
     return puzzle;

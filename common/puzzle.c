@@ -509,6 +509,15 @@ puzzleCopy(puzzle_t* puzzle1, puzzle_t* puzzle2){
 
 }
 
+/**************** puzzleCompare() ****************/
+/*
+ * See puzzle.h for details
+ */
+puzzle_t*
+puzzleCompare(puzzle_t* puzzle1, puzzle_t* puzzle2){
+
+}
+
 /**************** puzzlePrint() ****************/
 /*
  * See puzzle.h for details

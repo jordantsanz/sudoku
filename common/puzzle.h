@@ -154,6 +154,16 @@ bool puzzleSolved(puzzle_t* puzzle);
  */
 void puzzleCopy(puzzle_t* puzzle1, puzzle_t* puzzle2);
 
+/**************** puzzleCompare() ****************/
+/*
+ * compares two puzzles structures and returns a puzzle struct with 0's where same, 1's where different
+ * 
+ * input: two puzzle_t structs to be compared
+ * 
+ * o
+ */
+puzzle_t* puzzleCompare(puzzle_t* puzzle1, puzzle_t* puzzle2);
+
 /**************** puzzlePrint() ****************/
 /*
  * prints the sudoku puzzle to given file

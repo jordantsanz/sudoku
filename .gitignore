@@ -1,3 +1,4 @@
-*.o
 sudoku
 TIMELINE.md
+.DS_Store
+*.o
