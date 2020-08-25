@@ -516,6 +516,30 @@ puzzleCopy(puzzle_t* puzzle1, puzzle_t* puzzle2){
 puzzle_t*
 puzzleCompare(puzzle_t* puzzle1, puzzle_t* puzzle2){
 
+  if (puzzle1 == NULL || puzzle2 == NULL){
+    fprintf(stderr, "puzzle passed to puzzleComapre is NULL.\n");
+    return NULL;
+  }
+
+  puzzle_t* compare = puzzleNew();
+  if (compare == NULL){
+    fprintf(stderr, "Error creating compare puzzle.\n");
+    return NULL;
+  }
+
+  for (int i = 0; i < 9; i++){
+    for (int j = 0; j < 9; j++){
+      if (puzzleGetTile(puzzle1, i, j) == puzzleGetTile(puzzle2, i, j)){
+        puzzleSetTile(compare, i, j, 0);
+      }
+      else{
+        puzzleSetTile(compare, i, j, 1);
+      }
+    }
+  }
+
+  return compare;
+
 }
 
 /**************** puzzlePrint() ****************/

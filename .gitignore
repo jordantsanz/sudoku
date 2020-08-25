@@ -2,3 +2,6 @@ sudoku
 TIMELINE.md
 .DS_Store
 *.o
+.vscode
+__pycache__
+*.so

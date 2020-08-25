@@ -12,7 +12,7 @@ __version__ = "3.0.7pyqt"
 print("Imported cs1lib, version " + __version__)
 
 # hint to window manager where to place graphics window
-WeINDOW_X = 300
+WINDOW_X = 300
 WINDOW_Y = 300
 
 # Global canvas object

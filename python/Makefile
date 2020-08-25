@@ -5,7 +5,7 @@
 
 # object files, and the target library
 OBJS = ../solve/solve.c ../create/create.c ../common/list.c ../common/puzzle.c ../libcs50/file.c ../libcs50/memory.c
-LIB = sudoku.so
+LIB = sudokumodule.so
 
 CFLAGS = -fPIC -shared
 CC = cc
