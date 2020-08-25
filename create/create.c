@@ -65,6 +65,8 @@ puzzle_t* create(int num_tiles)
         return NULL;
     }
 
+    puzzlePrint(puzzle, stdout);
+
     return puzzle;
 
 }
