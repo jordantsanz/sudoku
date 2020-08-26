@@ -5,3 +5,4 @@ TIMELINE.md
 .vscode
 __pycache__
 *.so
+loadtest.py

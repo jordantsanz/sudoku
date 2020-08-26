@@ -560,6 +560,16 @@ puzzlePrint(puzzle_t* puzzle, FILE* fp){
       fprintf(fp, "%d\n", puzzle->grid[i][8]);
     }
   }
+  else if (puzzle != NULL && fp == NULL){
+    for (int i = 0; i < 9; i++){
+      for (int j = 0; j < 8; j++){
+        // print the first 8 elements of a row to the file
+        fprintf(stdout, "%d ", puzzle->grid[i][j]);
+      }
+      // print the final element of the row without an extra space and add a new line character
+      fprintf(stdout, "%d\n", puzzle->grid[i][8]);
+    }
+  }
 
 }
 

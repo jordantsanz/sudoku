@@ -95,4 +95,4 @@ puzzle_t* makePuzzleCopy(puzzle_t* puzzle);
  * - if user doesn't specify, -1 should be passed in
  * - because a pointer to a puzzle is returned, the user should call puzzleDelete() on the puzzle
  */
-puzzle_t* create(int num_tiles, FILE* fp);
+void create(int num_tiles, FILE* fp);

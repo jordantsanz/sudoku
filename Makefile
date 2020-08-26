@@ -19,20 +19,12 @@ MAKE = make
 all:
 	make -C libcs50
 	make -C common
-	make -C test
 	make -C create
 	make -C solve
 	make -C python
-	make sudoku
-
-$(PROG): $(OBJS)
-	$(CC) $(CFLAGS) $^ $(LIBS) -o $@
-
-sudoku.o: ./libcs50/file.h ./libcs50/memory.h ./common/puzzle.h ./common/list.h  ./solve/solve.h ./create/create.h
 
 ############## valgrind all programs ##########
 valgrind: all
-	make -C test valgrind
 	valgrind $(VFLAGS) ./sudoku create
 	valgrind $(VFLAGS) ./sudoku solve < $(TEST)
 	
@@ -41,7 +33,7 @@ clean:
 	rm -f *~
 	rm -fr data
 	rm -f *.o
-	rm -f sudoku
+	rm -f *.so
 	make -C libcs50 clean
 	make -C common clean
 	make -C test clean

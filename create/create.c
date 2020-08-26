@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <ctype.h>
+#include <unistd.h>
 #include "create.h"
 #include "../libcs50/memory.h"
 #include "../common/puzzle.h"
@@ -18,14 +19,15 @@
 #include "../solve/solve.h"
 
 /***************** prototypes *************/
-puzzle_t* create(int num_tiles, FILE* fp);
+void create(int num_tiles, FILE* fp);
 int fillInSquare(puzzle_t* puzzle, int startX, int startY);
 int inputSquareTile(puzzle_t* puzzle, int x, int y, list_t* list);
 void puzzleRemoveTiles(puzzle_t* puzzle, int num_tiles);
 puzzle_t* makePuzzleCopy(puzzle_t* puzzle);
 
-puzzle_t* create(int num_tiles, FILE* fp)
+void create(int num_tiles, FILE* fp)
 {
+
     // check for if number of tiles is set, or default
     if (num_tiles == -1) {
         num_tiles = 40;
@@ -33,7 +35,7 @@ puzzle_t* create(int num_tiles, FILE* fp)
 
     else if (num_tiles > 55){
         printf("Cannot remove that many tiles. \n");
-        return NULL;
+        return;
     }
 
     set_seed(); // set randomized seed
@@ -45,15 +47,27 @@ puzzle_t* create(int num_tiles, FILE* fp)
     if(fillInSquare(puzzle, 0, 0) == -1){
         printf("Puzzle not filled in correctly. \n");
         puzzleDelete(puzzle);
-        return NULL;
+        return;
     };
 
     // check that the puzzle solved
     if(!puzzleSolved(puzzle)){
         printf("Puzzle is not valid. :( \n");
         puzzleDelete(puzzle);
-        return NULL;
+        return;
     }
+
+    if (fp == NULL){
+        FILE* fp1;
+        fp1 = fopen("./uipuzzles/solvedpuzzle.txt", "w");
+        if (fp1 == NULL){
+            fprintf(stderr, "Couldn't write to fp1.\n");
+            return;
+        }
+        puzzlePrint(puzzle, fp1);
+        fclose(fp1);
+    }
+    
 
     // remove tiles from puzzle
     puzzleRemoveTiles(puzzle, num_tiles);
@@ -62,15 +76,24 @@ puzzle_t* create(int num_tiles, FILE* fp)
     if(solve(puzzle, NULL, 0, stdout) != 1){
         printf("There wasn't only one solution. \n");
         puzzleDelete(puzzle);
-        return NULL;
+        return;
     }
 
     if (fp != NULL){
         puzzlePrint(puzzle, fp);
     }
+    else{
+        FILE* fp2;
+        fp2 = fopen("./uipuzzles/newpuzzle.txt", "w");
+        if (fp2 == NULL){
+            fprintf(stderr, "Couldn't write to fp2.\n");
+            return;
+        }
+        puzzlePrint(puzzle, fp2);
+        fclose(fp2);
+    }
 
-    return puzzle;
-
+    free(puzzle);
 }
 
 int fillInSquare(puzzle_t* puzzle, int startX, int startY)

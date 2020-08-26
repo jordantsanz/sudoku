@@ -14,6 +14,12 @@
 
 int solve(puzzle_t* puzzle, puzzle_t* solvedHolder, int solved_count, FILE* fp) 
 {
+
+    if (puzzle == NULL){
+        fprintf(stderr, "Puzzle passed into solve is NULL.\n");
+        return 0;
+    }
+
     // loop through all of the squares is the sudoku puzzle
     for (int y = 0; y < 9; y++) {
         for (int x = 0; x < 9; x++) {
@@ -47,10 +53,48 @@ int solve(puzzle_t* puzzle, puzzle_t* solvedHolder, int solved_count, FILE* fp)
     if (puzzleSolved(puzzle) == true) {
         if (solvedHolder != NULL){
             puzzleCopy(puzzle, solvedHolder);
+            if (fp == NULL){
+                FILE* fp2;
+                fp2 = fopen("./uipuzzles/solvedpuzzle.txt", "w");
+                if (fp2 == NULL){
+                    fprintf(stderr, "Failed to write to solvedpuzzle.txt.\n");
+                    return 0;
+                }
+                puzzlePrint(solvedHolder, fp2);
+                fclose(fp2);
+            }
         }
         solved_count++;
     }
 
     return solved_count;
     
+}
+
+void solveUI(){
+
+    puzzle_t* loadIn = puzzleNew();
+    if (loadIn == NULL){
+        fprintf(stderr, "Couldn't allocate memory for loadIn.\n");
+        return;
+    }
+    puzzle_t* buffer = puzzleNew();
+    if (buffer == NULL){
+        fprintf(stderr, "Couldn't allocate memory for buffer.\n");
+        puzzleDelete(loadIn);
+        return;
+    }
+    FILE* fp1 = fopen("./uipuzzles/newpuzzle.txt", "r");
+    if (fp1 == NULL){
+        fprintf(stderr, "Failed to read from newpuzzle.txt.\n");
+        puzzleDelete(loadIn);
+        puzzleDelete(buffer);
+        return;
+    }
+    puzzleLoad(loadIn, fp1);
+    fclose(fp1);
+    solve(loadIn, buffer, 0, NULL);
+    free(loadIn);
+    free(buffer);
+
 }
