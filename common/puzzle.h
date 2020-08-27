@@ -83,6 +83,17 @@ void puzzleSetTile(puzzle_t* puzzle, int row, int column, int value);
  */
 bool puzzleValid(puzzle_t* puzzle);
 
+/**************** puzzleValidUI() ****************/
+/*
+ * wrapper function for UI to call to see if "newpuzzle.txt" is valid
+ * 
+ * input: None
+ * 
+ * output: True if Valid, False Otherwise
+ */
+bool
+puzzleValidUI();
+
 /**************** puzzleValidTile() ****************/
 /*
  * checks to see if a single tile in the sudoku is valid

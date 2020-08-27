@@ -89,7 +89,12 @@ def mouse_move(mx, my):
 def mouse_click(mx, my):
     global difficulty, clickedSquare, xClick, yClick, inputNumber
     global drawFirstPage
-    global puzzle, currentPuzzle, showSolved, showChecked
+    global puzzle, currentPuzzle, showSolved, showChecked, solvedPuzzle, colorPuzzle
+
+
+    infile = open("./uipuzzles/blank.txt", "r")
+    colorPuzzle = read_in_puzzle(infile)
+    infile.close()
 
     ## handling clicks on the first page
     if drawFirstPage:
@@ -100,33 +105,57 @@ def mouse_click(mx, my):
             infile = open("./uipuzzles/blank.txt", "r")
             puzzle = read_in_puzzle(infile)
             infile.close()
-            infile2 = open("./uipuzzles/newpuzzle.txt", "r")
+
+            infile2 = open("./uipuzzles/blank.txt", "r")           
             currentPuzzle = read_in_puzzle(infile2)
             infile2.close()
+
             drawFirstPage = False
 
         ## easy button click
         elif windowWidth//4 <= mx <= windowWidth//4 + windowWidth//2 and (windowHeight//5) * 2 <= my <= (windowHeight//5) * 2 + windowHeight//6:
             difficulty = "easy"
             mainmodule.create(35, int(round(time.time() * 1000)), None)
+
+            # read in original puzzle template
             infile = open("./uipuzzles/newpuzzle.txt", "r")
             puzzle = read_in_puzzle(infile)
             infile.close()
+
+            # read in puzzle to be changed
             infile2 = open("./uipuzzles/newpuzzle.txt", "r")
             currentPuzzle = read_in_puzzle(infile2)
             infile2.close()
+
+            # read in solved puzzle
+            infile = open("./uipuzzles/solvedpuzzle.txt", "r")
+            solvedPuzzle = read_in_puzzle(infile)
+            infile.close()
+
+            # off of first page
             drawFirstPage = False
         
         ## medium button click
         elif windowWidth//4 <= mx <= windowWidth//4 + windowWidth//2 and (windowHeight//5) * 3 <= my <= (windowHeight//5) * 3 + windowHeight//6:
             difficulty = "medium"
             mainmodule.create(40, int(round(time.time() * 1000)), None)
+
+            # read in original puzzle
             infile = open("./uipuzzles/newpuzzle.txt", "r")
             puzzle = read_in_puzzle(infile)
             infile.close()
+
+            # read in puzzle that will be changed
             infile2 = open("./uipuzzles/newpuzzle.txt", "r")
             currentPuzzle = read_in_puzzle(infile2)
             infile2.close()
+
+            # read in solved puzzle
+            infile = open("./uipuzzles/solvedpuzzle.txt", "r")
+            solvedPuzzle = read_in_puzzle(infile)
+            infile.close()
+
+            # not on first page anymore
             drawFirstPage = False
         
         ## hard button click
@@ -135,11 +164,13 @@ def mouse_click(mx, my):
             mainmodule.create(50, int(round(time.time() * 1000)), None)
             infile = open("./uipuzzles/newpuzzle.txt", "r")
             puzzle = read_in_puzzle(infile)
-            print("currentPuzzle set")
             infile.close()
             infile2 = open("./uipuzzles/newpuzzle.txt", "r")
             currentPuzzle = read_in_puzzle(infile2)
             infile2.close()  
+            infile = open("./uipuzzles/solvedpuzzle.txt", "r")
+            solvedPuzzle = read_in_puzzle(infile)
+            infile.close()
             drawFirstPage = False
     
     ## clicks on the game page
@@ -150,7 +181,17 @@ def mouse_click(mx, my):
             showChecked = False
             showSolved = True
             if difficulty == "solve":
-                mainmodule.solveUI()
+                outfile = open("./uipuzzles/newpuzzle.txt", "w")
+                write_out_puzzle(currentPuzzle, outfile)
+                outfile.close()
+                if (mainmodule.puzzleValidUI()):
+                    mainmodule.solveUI()
+                    infile = open("./uipuzzles/solvedpuzzle.txt", "r")
+                    solvedPuzzle = read_in_puzzle(infile)
+                    infile.close()
+                else:
+                    solvedPuzzle = None
+            
 
         # new game button
         elif windowWidth//4 <= mx <= (windowWidth//4)*3 and ((windowHeight//3)*2)+(squareSize*3.5) <= my <= ((windowHeight//3)*2)+(squareSize*3.5)+(squareSize*2):
@@ -160,7 +201,7 @@ def mouse_click(mx, my):
 
         # check button
         elif windowWidth//4 <= mx <= (windowWidth//4)*3 and ((windowHeight//3)*2)-(squareSize*2.5) <= my <= ((windowHeight//3)*2)-(squareSize*3)+(squareSize*2.5):
-            if showChecked = False:
+            if showChecked == False:
                 showChecked = True
             else:
                 showChecked = False
@@ -205,7 +246,7 @@ def check_clicks():
         # check each square to see if it was that square
         for row in range(9):
             for column in range(9):
-                if edgeSize // 2 + (squareSize*row) <= xClick <= edgeSize // 2 + (squareSize*row) + squareSize and edgeSize // 2 + (squareSize*column) <= yClick <= edgeSize // 2 + (squareSize*column) + squareSize:
+                if edgeSize // 2 + (squareSize*column) <= xClick <= edgeSize // 2 + (squareSize*column) + squareSize and edgeSize // 2 + (squareSize*row) <= yClick <= edgeSize // 2 + (squareSize*row) + squareSize:
 
                     # if it was not a delete and it wasn't an original number
                     if inputNumber != "10" and (puzzle[row][column] != currentPuzzle[row][column] or currentPuzzle[row][column] == "0"):
@@ -213,10 +254,7 @@ def check_clicks():
 
                     # else just if it wasn't an original number
                     else:
-                        print("original puzzle num: " + str(puzzle[row][column]))
-                        print("new puzzle num: " + str(currentPuzzle[row][column]))
                         if puzzle[row][column] != currentPuzzle[row][column] and not showSolved:
-                            print("delete changed")
                             currentPuzzle[row][column] = "0"
                     
         
@@ -288,7 +326,7 @@ def draw_game_page():
 
 # draw all of the graphics
 def draw_boxes():
-    global showSolved, showChecked, solvedPuzzle, inputNumber
+    global showSolved, showChecked, solvedPuzzle, inputNumber, clickedSquare
 
     set_fill_color(1, 1, 1)
 
@@ -311,22 +349,19 @@ def draw_boxes():
     set_fill_color(0, 0, 1, .5)
     set_font_size(windowWidth // 15)
 
-
-    infile = open("./uipuzzles/blank.txt", "r")
-    colorPuzzle = read_in_puzzle(infile)
-    infile.close()
-
      # if the solve button was clicked
     if showSolved:
         clickedSquare = False
         inputNumber = None
         
         set_stroke_color(0, 0, 0)
-
-        # draw each answer to the puzzle in the right spot
-        for rowIndex in range(9):
-            for colIndex in range(9):
-                currentPuzzle[rowIndex][colIndex] = solvedPuzzle[rowIndex][colIndex]
+        if solvedPuzzle == None:
+            draw_text("Not a valid Puzzle", windowWidth//4, (windowHeight//3)*2)
+        else:
+            # draw each answer to the puzzle in the right spot
+            for rowIndex in range(9):
+                for colIndex in range(9):
+                    currentPuzzle[rowIndex][colIndex] = solvedPuzzle[rowIndex][colIndex]
     
     if showChecked:
 
@@ -346,12 +381,15 @@ def draw_boxes():
                 if (colorPuzzle[rowIndex][colIndex] == 1):
                     set_stroke_color(1, 0, 0)
 
-                # else, draw in black
-                else:
+                elif (currentPuzzle[rowIndex][colIndex] == puzzle[rowIndex][colIndex]):
                     set_stroke_color(0, 0, 0)
 
+                # else, draw in black
+                else:
+                    set_stroke_color(.4, .4, .4)
+
                 # draw the number
-                draw_text(currentPuzzle[rowIndex][colIndex], ((edgeSize // 10) * 6) + (squareSize*rowIndex), ((edgeSize // 10) * 4) + (squareSize*(colIndex + 1)))
+                draw_text(currentPuzzle[rowIndex][colIndex], ((edgeSize // 10) * 6) + (squareSize*colIndex), ((edgeSize // 10) * 4) + (squareSize*(rowIndex+ 1)))
 
 
     # draw number button hovers
@@ -397,12 +435,9 @@ def draw_boxes():
     else:
         set_fill_color(.26, .41, .86)
     
-    draw_rectangle(windowWidth//4, ((windowHeight//3)*2)-(squareSize*2.5), windowWidth//2, squareSize * 2)
-    draw_text("Check", windowWidth//4 + (2 * squareSize), ((windowHeight//3)*2)-(squareSize*1.5))
-
-    infile = open("./uipuzzles/solvedpuzzle.txt", "r")
-    solvedPuzzle = read_in_puzzle(infile)
-    infile.close() 
+    if difficulty != "solve":
+        draw_rectangle(windowWidth//4, ((windowHeight//3)*2)-(squareSize*2.5), windowWidth//2, squareSize * 2)
+        draw_text("Check", windowWidth//4 + (2 * squareSize), ((windowHeight//3)*2)-(squareSize*1.5)) 
 
    
 # read in a puzzle from a text file

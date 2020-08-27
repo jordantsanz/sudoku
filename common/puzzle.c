@@ -261,6 +261,38 @@ puzzleValid(puzzle_t* puzzle){
 
 }
 
+/**************** puzzleValidUI() ****************/
+/*
+ * See puzzle.h for details
+ */
+bool
+puzzleValidUI(){
+  
+  FILE* fp = fopen("./uipuzzles/newpuzzle.txt", "r");
+
+  // check to make sure it can open
+  if (fp == NULL){
+      fprintf(stderr, "Failed to read from newpuzzle.txt.\n");
+      return false;
+  }
+
+  puzzle_t* puzzle = puzzleNew();
+  if (puzzle == NULL){
+    fprintf(stderr, "Failed to allocate memory for puzzle.\n");
+    fclose(fp);
+    return false;
+  }
+
+  puzzleLoad(puzzle, fp);
+  fclose(fp);
+
+  bool valid = puzzleValid(puzzle);
+
+  puzzleDelete(puzzle);
+  return valid;
+
+}
+
 /**************** puzzleValidTile() ****************/
 /*
  * See puzzle.h for details
