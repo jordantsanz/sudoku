@@ -27,7 +27,7 @@ int main(const int argc, const char* argv[])
     if (argc == 1){
         num_tiles = -1;
     }
-    else if (argc == 2){
+    else if (argc >= 2){
         num_tiles = atoi(argv[1]);
     }
     else{
@@ -83,6 +83,7 @@ int main(const int argc, const char* argv[])
     puzzleDelete(puzzle);
     puzzleDelete(puzzle2);
     puzzleDelete(puzzle3);
+    
 }
 
 // function taken from https://stackoverflow.com/questions/3930363/implement-time-delay-in-c
