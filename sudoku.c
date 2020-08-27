@@ -12,13 +12,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include "./libcs50/file.h"
+#include "./libcs50/memory.h"
 #include "./create/create.h"
 #include "./solve/solve.h"
 #include "./common/puzzle.h"
 #include "./common/list.h"
 
 void interface();
+static void space();
 
 int main(const int argc, const char *argv[]) 
 {
@@ -44,15 +47,16 @@ int main(const int argc, const char *argv[])
 void interface(char* arg) 
 {
     if (strcmp(arg, "create") == 0){
-        puzzle_t* created = create(40);
+        puzzle_t* created = assertp(create(40), "Error generating a sudoku puzzle.\n");
         puzzlePrint(created, stdout);
         puzzleDelete(created);
     }
     else if (strcmp(arg, "solve") == 0){
-        puzzle_t* toSolve = puzzleNew();
+        puzzle_t* toSolve = assertp(puzzleNew(), "Error creating an empty sudoku puzzle.\n");
         puzzleLoad(toSolve, stdin);
-        puzzle_t* solvedHolder = puzzleNew();
+        puzzle_t* solvedHolder = assertp(puzzleNew(), "Error creating an empty sudoku puzzle.\n");
         int solvedCount = solve(toSolve, solvedHolder, 0, stdout);
+        space();
         if (solvedCount > 1){
             fprintf(stdout, "More than one solution. Here is one possible solution.\n");
         }
@@ -69,4 +73,13 @@ void interface(char* arg)
         fprintf(stderr, "Error with handling argument.\n");
         exit(3);
     }
+}
+
+static void
+space(void)
+{
+  // print a space iff stdin is a tty (terminal)
+  if (isatty(fileno(stdin))) {
+    printf("\n");
+  }
 }
