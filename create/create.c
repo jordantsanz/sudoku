@@ -19,13 +19,13 @@
 #include "../solve/solve.h"
 
 /***************** prototypes *************/
-void create(int num_tiles, FILE* fp);
+void create(int num_tiles, int time, FILE* fp);
 int fillInSquare(puzzle_t* puzzle, int startX, int startY);
 int inputSquareTile(puzzle_t* puzzle, int x, int y, list_t* list);
 void puzzleRemoveTiles(puzzle_t* puzzle, int num_tiles);
 puzzle_t* makePuzzleCopy(puzzle_t* puzzle);
 
-void create(int num_tiles, FILE* fp)
+void create(int num_tiles, int time, FILE* fp)
 {
 
     // check for if number of tiles is set, or default
@@ -38,7 +38,7 @@ void create(int num_tiles, FILE* fp)
         return;
     }
 
-    set_seed(); // set randomized seed
+    set_seed(time); // set randomized seed
 
     puzzle_t* puzzle = assertp(puzzleNew(), "Puzzle could not be created.");  // puzzle
 

@@ -15,6 +15,7 @@
 int solve(puzzle_t* puzzle, puzzle_t* solvedHolder, int solved_count, FILE* fp) 
 {
 
+    // check that puzzle exists
     if (puzzle == NULL){
         fprintf(stderr, "Puzzle passed into solve is NULL.\n");
         return 0;
@@ -51,15 +52,25 @@ int solve(puzzle_t* puzzle, puzzle_t* solvedHolder, int solved_count, FILE* fp)
     }
     // if the puzzle is currently solved then print it out
     if (puzzleSolved(puzzle) == true) {
+
+        // check that solved holder exists
         if (solvedHolder != NULL){
+
+            // create puzzle copy
             puzzleCopy(puzzle, solvedHolder);
+
+            // if filepointer is null, write to file for UI
             if (fp == NULL){
                 FILE* fp2;
                 fp2 = fopen("./uipuzzles/solvedpuzzle.txt", "w");
+
+                // if filepointer 2 is null, cannot open file to write
                 if (fp2 == NULL){
                     fprintf(stderr, "Failed to write to solvedpuzzle.txt.\n");
                     return 0;
                 }
+
+                // print puzzle
                 puzzlePrint(solvedHolder, fp2);
                 fclose(fp2);
             }
@@ -71,28 +82,44 @@ int solve(puzzle_t* puzzle, puzzle_t* solvedHolder, int solved_count, FILE* fp)
     
 }
 
+// for graphics UI solving 
 void solveUI(){
 
+    // create new puzzle
     puzzle_t* loadIn = puzzleNew();
+
+    // mem check
     if (loadIn == NULL){
         fprintf(stderr, "Couldn't allocate memory for loadIn.\n");
         return;
     }
+
+    // create buffer puzzle
     puzzle_t* buffer = puzzleNew();
+
+    // mem check
     if (buffer == NULL){
         fprintf(stderr, "Couldn't allocate memory for buffer.\n");
         puzzleDelete(loadIn);
         return;
     }
+
+    // open ui puzzles from create
     FILE* fp1 = fopen("./uipuzzles/newpuzzle.txt", "r");
+
+    // check to make sure it can open
     if (fp1 == NULL){
         fprintf(stderr, "Failed to read from newpuzzle.txt.\n");
         puzzleDelete(loadIn);
         puzzleDelete(buffer);
         return;
     }
+
+    // load in puzzle to puzzle structure from create puzzle
     puzzleLoad(loadIn, fp1);
     fclose(fp1);
+
+    // solve puzzle and free
     solve(loadIn, buffer, 0, NULL);
     free(loadIn);
     free(buffer);

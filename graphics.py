@@ -1,5 +1,6 @@
 from ctypes import *
 import sys
+import time
 
 
 from cs1lib import *
@@ -26,11 +27,10 @@ hover = None
 clickedSquare = False # keeps track if a square has been clicked or not
 xClick = 0
 yClick = 0
-inputNumber = None
+inputNumber = 0
 currentPuzzle = None
 
 puzzle = None
-
 
 
 ## draws simple background for game
@@ -67,11 +67,14 @@ def mouse_move(mx, my):
     ## hovers on the game page
     else:
         overButton = False
-        if windowWidth//4 <= mx <= windowWidth//4 + windowWidth//2 and (windowHeight//3)*2 <= my <= (windowHeight//3)*2 + squareSize * 2:
+        if windowWidth//4 <= mx <= windowWidth//4 + windowWidth//2 and (windowHeight//3)*2+(squareSize*.5) <= my <= (windowHeight//3)*2+(squareSize*.5) + (squareSize * 2):
             hover = "page2Solve"
             overButton = True
-        elif windowWidth//4 <= mx <= (windowWidth//4)*3 and ((windowHeight//3)*2)+(squareSize*3) <= my <= ((windowHeight//3)*2)+(squareSize*3) + squareSize * 2:
+        elif windowWidth//4 <= mx <= windowWidth//4 + windowWidth//2 and ((windowHeight//3)*2)+(squareSize*3.5) <= my <= ((windowHeight//3)*2)+(squareSize*3.5) + (squareSize * 2):
             hover = "page2NewGame"
+            overButton = True
+        elif windowWidth//4 <= mx <= windowWidth//4 + windowWidth//2 and (windowHeight//3)*2-(squareSize*2.5) <= my <= (windowHeight//3)*2-(squareSize*2.5) + (squareSize * 2):
+            hover = "page2Check"
             overButton = True
         for button in range(10):
             if ((edgeSize // 4 + (buttonSize*button)) + (button * ((windowWidth - edgeSize // 2) - (10*buttonSize)) // 9)) <= mx <= ((edgeSize // 4 + (buttonSize*button)) + (button * ((windowWidth - edgeSize // 2) - (10*buttonSize)) // 9)) + buttonSize:
@@ -105,7 +108,7 @@ def mouse_click(mx, my):
         ## easy button click
         elif windowWidth//4 <= mx <= windowWidth//4 + windowWidth//2 and (windowHeight//5) * 2 <= my <= (windowHeight//5) * 2 + windowHeight//6:
             difficulty = "easy"
-            mainmodule.create(35, None)
+            mainmodule.create(35, int(round(time.time() * 1000)), None)
             infile = open("./uipuzzles/newpuzzle.txt", "r")
             puzzle = read_in_puzzle(infile)
             infile.close()
@@ -117,7 +120,7 @@ def mouse_click(mx, my):
         ## medium button click
         elif windowWidth//4 <= mx <= windowWidth//4 + windowWidth//2 and (windowHeight//5) * 3 <= my <= (windowHeight//5) * 3 + windowHeight//6:
             difficulty = "medium"
-            mainmodule.create(40, None)
+            mainmodule.create(40, int(round(time.time() * 1000)), None)
             infile = open("./uipuzzles/newpuzzle.txt", "r")
             puzzle = read_in_puzzle(infile)
             infile.close()
@@ -129,7 +132,7 @@ def mouse_click(mx, my):
         ## hard button click
         elif  windowWidth//4 <= mx <= windowWidth//4 + windowWidth//2 and (windowHeight//5) * 4 <= my <= windowHeight//5 * 4 + windowHeight//6:
             difficulty = "hard" 
-            mainmodule.create(50, None)
+            mainmodule.create(50, int(round(time.time() * 1000)), None)
             infile = open("./uipuzzles/newpuzzle.txt", "r")
             puzzle = read_in_puzzle(infile)
             print("currentPuzzle set")
@@ -143,19 +146,24 @@ def mouse_click(mx, my):
     else:
         
         # solve button
-        if windowWidth//4 <= mx <= (windowWidth//4)*3 and (windowHeight//3)*2 <= my <= ((windowHeight//3)*2)+(squareSize*2):
+        if windowWidth//4 <= mx <= (windowWidth//4)*3 and (windowHeight//3)*2+(squareSize*.5) <= my <= ((windowHeight//3)*2)+(squareSize*2.5):
+            showChecked = False
             showSolved = True
             if difficulty == "solve":
                 mainmodule.solveUI()
 
         # new game button
-        elif windowWidth//4 <= mx <= (windowWidth//4)*3 and ((windowHeight//3)*2)+(squareSize*3) <= my <= ((windowHeight//3)*2)+(squareSize*3)+(squareSize*2):
+        elif windowWidth//4 <= mx <= (windowWidth//4)*3 and ((windowHeight//3)*2)+(squareSize*3.5) <= my <= ((windowHeight//3)*2)+(squareSize*3.5)+(squareSize*2):
             drawFirstPage = True
+            showChecked = False
             showSolved = False
 
-        # windowWidth//4, ((windowHeight//3)*2)-(squareSize*3), windowWidth//2, squareSize * 2
-        elif windowWidth//4 <= mx <= (windowWidth//4)*3 and ((windowHeight//3)*2)-(squareSize*3) <= my <= ((windowHeight//3)*2)-(squareSize*3)+(squareSize*2):
-            showChecked = True
+        # check button
+        elif windowWidth//4 <= mx <= (windowWidth//4)*3 and ((windowHeight//3)*2)-(squareSize*2.5) <= my <= ((windowHeight//3)*2)-(squareSize*3)+(squareSize*2.5):
+            if showChecked = False:
+                showChecked = True
+            else:
+                showChecked = False
         
         ## check for number button clicks on button y
         if ((edgeSize // 2) + (squareSize*10) + (edgeSize // 4)) <= my <= ((edgeSize // 2) + (squareSize*10) + (edgeSize // 4)) + buttonSize:  # check y
@@ -192,7 +200,7 @@ def check_clicks():
     global currentPuzzle, clickedSquare
 
     # if number square has been clicked and a square has been clicked
-    if clickedSquare and inputNumber != None:
+    if clickedSquare and inputNumber != None and inputNumber != 0:
 
         # check each square to see if it was that square
         for row in range(9):
@@ -207,7 +215,7 @@ def check_clicks():
                     else:
                         print("original puzzle num: " + str(puzzle[row][column]))
                         print("new puzzle num: " + str(currentPuzzle[row][column]))
-                        if puzzle[row][column] != currentPuzzle[row][column]:
+                        if puzzle[row][column] != currentPuzzle[row][column] and not showSolved:
                             print("delete changed")
                             currentPuzzle[row][column] = "0"
                     
@@ -280,13 +288,14 @@ def draw_game_page():
 
 # draw all of the graphics
 def draw_boxes():
-    global showSolved, showChecked, colorPuzzle, solvedPuzzle
+    global showSolved, showChecked, solvedPuzzle, inputNumber
 
     set_fill_color(1, 1, 1)
 
     ## draw all 9x9 squares
     for row in range(9):
         for column in range(9):
+            set_fill_color(1, 1, 1)
             draw_rectangle(edgeSize // 2 + (squareSize*row), edgeSize // 2 + (squareSize*column), squareSize, squareSize)
 
     disable_fill()
@@ -302,13 +311,30 @@ def draw_boxes():
     set_fill_color(0, 0, 1, .5)
     set_font_size(windowWidth // 15)
 
+
+    infile = open("./uipuzzles/blank.txt", "r")
+    colorPuzzle = read_in_puzzle(infile)
+    infile.close()
+
+     # if the solve button was clicked
+    if showSolved:
+        clickedSquare = False
+        inputNumber = None
+        
+        set_stroke_color(0, 0, 0)
+
+        # draw each answer to the puzzle in the right spot
+        for rowIndex in range(9):
+            for colIndex in range(9):
+                currentPuzzle[rowIndex][colIndex] = solvedPuzzle[rowIndex][colIndex]
+    
     if showChecked:
 
         for rowIndex in range(9):
             for colIndex in range(9):
-                if currentPuzzle[rowIndex][colIndex] == solvedPuzzle[rowIndex][colIndex]:
+                if currentPuzzle[rowIndex][colIndex] != solvedPuzzle[rowIndex][colIndex]:
                     colorPuzzle[rowIndex][colIndex] = 1
-                    
+
     # draw the numbers in the puzzle
     for rowIndex in range(9):
         for colIndex in range(9):
@@ -321,61 +347,64 @@ def draw_boxes():
                     set_stroke_color(1, 0, 0)
 
                 # else, draw in black
-                elif colorPuzzle[rowIndex][colIndex] == puzzle[rowIndex][colIndex]:
-                    set_stroke_color(0, 0, 0)
-                
                 else:
-                    set_stroke_color(.4, .4, .4)
+                    set_stroke_color(0, 0, 0)
 
                 # draw the number
                 draw_text(currentPuzzle[rowIndex][colIndex], ((edgeSize // 10) * 6) + (squareSize*rowIndex), ((edgeSize // 10) * 4) + (squareSize*(colIndex + 1)))
 
 
-    # draw the buttons with numbers
+    # draw number button hovers
     for button in range(10):
         if hover == "page2" + str(button + 1) or inputNumber == str(button + 1):
             set_fill_color(.54, .36, .92)
         else:
             set_fill_color(.34, .15, .90)
+
+        # draw button
         draw_rectangle((edgeSize // 4 + (buttonSize*button)) + (button * ((windowWidth - edgeSize // 2) - (10*buttonSize)) // 9), ((edgeSize // 2 + (squareSize*10)) + edgeSize // 4), buttonSize, buttonSize)
+        set_stroke_color(0, 0, 0)  ## black
+
+        # draw numbers on button
         if (button != 9):
             draw_text(str(button + 1), (edgeSize // 4 + (buttonSize*button)) + (button * ((windowWidth - edgeSize // 2) - (10*buttonSize)) // 9) + (buttonSize // 5),  (((edgeSize // 2 + (squareSize*10)) + edgeSize // 4) + buttonSize) - (buttonSize // 5))
         else:
             draw_text("X", (edgeSize // 4 + (buttonSize*button)) + (button * ((windowWidth - edgeSize // 2) - (10*buttonSize)) // 9) + (buttonSize // 5),  (((edgeSize // 2 + (squareSize*10)) + edgeSize // 4) + buttonSize) - (buttonSize // 5))
     
-    # drawing solve button
+    # drawing solve button colors
     if hover == "page2Solve":
         set_fill_color(.31, .49, 1)
     else:
         set_fill_color(.26, .41, .86)
-    draw_rectangle(windowWidth//4, (windowHeight//3)*2, windowWidth//2, squareSize * 2)
-    draw_text("Solve", windowWidth//4 + (2 * squareSize), (windowHeight//3)*2 + squareSize)
 
-    # drawing new game button
+    # solve button drawing
+    draw_rectangle(windowWidth//4, (windowHeight//3)*2+(squareSize*.5), windowWidth//2, squareSize * 2)
+    draw_text("Solve", windowWidth//4 + (2 * squareSize), (windowHeight//3)*2 + (squareSize*1.5))
+
+    # drawing new game button colors
     if hover == "page2NewGame":
         set_fill_color(.31, .49, 1)
     else:
         set_fill_color(.26, .41, .86)
-    draw_rectangle(windowWidth//4, ((windowHeight//3)*2)+(squareSize*3), windowWidth//2, squareSize * 2)
-    draw_text("New Game", windowWidth//4 + squareSize, ((windowHeight//3)*2)+(squareSize*4))
+    
+    # draw new game button
+    draw_rectangle(windowWidth//4, ((windowHeight//3)*2)+(squareSize*3.5), windowWidth//2, squareSize * 2)
+    draw_text("New Game", windowWidth//4 + squareSize, ((windowHeight//3)*2)+(squareSize*4.5))
 
     # drawing a check button
-    draw_rectangle(windowWidth//4, ((windowHeight//3)*2)-(squareSize*2), windowWidth//2, squareSize * 2)
-    draw_text("Check", windowWidth//4 + squareSize, ((windowHeight//3)*2)-(squareSize*4))
+    if hover == "page2Check":
+        set_fill_color(.31, .49, 1)
+    else:
+        set_fill_color(.26, .41, .86)
+    
+    draw_rectangle(windowWidth//4, ((windowHeight//3)*2)-(squareSize*2.5), windowWidth//2, squareSize * 2)
+    draw_text("Check", windowWidth//4 + (2 * squareSize), ((windowHeight//3)*2)-(squareSize*1.5))
 
-    # if the solve button was clicked
-    if showSolved:
-        infile = open("./uipuzzles/solvedpuzzle.txt", "r")
-        solvedPuzzle = read_in_puzzle(infile)
-        infile.close()  
-        set_stroke_color(0, 0, 0)
+    infile = open("./uipuzzles/solvedpuzzle.txt", "r")
+    solvedPuzzle = read_in_puzzle(infile)
+    infile.close() 
 
-        # draw each answer to the puzzle in the right spot
-        for rowIndex in range(9):
-            for colIndex in range(9):
-                currentPuzzle[rowIndex][colIndex] = solvedPuzzle[rowIndex][colIndex]
-                # draw_text(solvedPuzzle[rowIndex][colIndex], ((edgeSize // 10) * 6) + (squareSize*rowIndex), ((edgeSize // 10) * 4) + (squareSize*(colIndex + 1)))
-
+   
 # read in a puzzle from a text file
 def read_in_puzzle(infile):
     puzzle = []
@@ -402,11 +431,7 @@ def main():
     else:
         draw_game_page()
 
-
-infile = open("./uipuzzles/blank.txt", "r")
-colorPuzzle = read_in_puzzle(infile)
-infile.close()
-
+ 
 start_graphics(main, title="Sudoku", width=windowWidth, height=windowHeight, mouse_press=mouse_click, mouse_release=mouse_release, key_press=key_click, key_release=key_release, mouse_move=mouse_move)
 
 
