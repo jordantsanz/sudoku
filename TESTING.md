@@ -80,3 +80,7 @@ Testing for `solve` is as follows:
 2. Test on puzzle with no solutions
 
 3. Test on puzzle with multiple solutions
+
+### fuzz
+
+Tests the program as a whole. Runs a loop that constantly creates new sudoku puzzles and makes sure they have only one unique solutions. Then solves the puzzle and makes sure the solution is valid.
