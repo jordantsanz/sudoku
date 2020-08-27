@@ -34,7 +34,7 @@ typedef struct list {
 
 /**************** local functions ****************/
 void swap(int numberList[], int i, int j);
-void set_seed();
+void set_seed(int time);
 void reset_seed(int num);
 
 
@@ -103,7 +103,7 @@ void reset_seed(int num)
 }
 
 /**************************** set_seed ************/
-void set_seed(int num)
+void set_seed(int time)
 {
-    srand(time(NULL));
+    srand(time);
 }

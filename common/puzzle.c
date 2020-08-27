@@ -48,6 +48,8 @@ puzzleNew(){
 
   // allocate memory for 2-D array to conatin the puzzle
   int** array = (int**)calloc(9, sizeof(int*));
+
+  // mem check
   if (array == NULL){
     fprintf(stderr, "Couldn't allocate memory for array\n");
     free(puzzle);
@@ -58,11 +60,14 @@ puzzleNew(){
   for (int i = 0; i < 9; i++){
     int* subArray = (int*)calloc(9, sizeof(int));
     if (subArray == NULL){
+
       // if at any point you fail to allocate memory for a row, free the already allocated rows, the array, and the puzzle, and return NULL
       fprintf(stderr, "Couldn't allocate memory for subArray\n");
       for (int j = 0; j < i; i++){  
         free(array[j]);
       }
+
+      // free and return
       free(array);
       free(puzzle);
       return NULL;
@@ -265,6 +270,7 @@ puzzleValidTile(puzzle_t* puzzle, int row, int column){
 
   int subGridRow;
   int subGridColumn;
+
   // if the puzzle is null or the coordinate is out of bound, error handle
   if (puzzle == NULL || row < 0 || row >= 9 || column < 0 || column >= 9){
     fprintf(stderr, "Puzzle is null or row/column is out of bounds.\n");
@@ -327,17 +333,21 @@ puzzleValidRow(puzzle_t* puzzle, int row){
   // for each value in the given row
   for (int i = 0; i < 9; i++){
     value = puzzle->grid[row][i];
+
     // if this is a non-0 (ie non empty) value
     if (value != 0){
       // if we haven't seen this value before
+
       if (check[value - 1] == 0){
         // denote that value as seen by setting its tracker to 1, we value-1 to convert to index on 0
         check[value - 1] = 1;
       }
+
       // else if we have seen it, this isn't a valid row
       else{
         return false;
       }
+
     }
   }
 
@@ -370,13 +380,17 @@ puzzleValidColumn(puzzle_t* puzzle, int column){
   // for each value in the given column
   for (int i = 0; i < 9; i++){
     value = puzzle->grid[i][column];
+
     // if this is a non-0 (ie non empty) value
     if (value != 0){
+
       // if we haven't seen this value before
       if (check[value - 1] == 0){
+
         // denote that value as seen by setting its tracker to 1, we value-1 to convert to index on 0
         check[value - 1] = 1;
       }
+
       // else if we have seen it, this isn't a valid column
       else{
         return false;
@@ -386,7 +400,6 @@ puzzleValidColumn(puzzle_t* puzzle, int column){
 
   // if we reach this point all non-0 values in the column were unique, so return true
   return true;
-
 }
 
 /**************** puzzleValidSquare() ****************/
@@ -414,13 +427,17 @@ puzzleValidSquare(puzzle_t* puzzle, int row, int column){
   for (int i = 0; i < 3; i++){
     for (int j = 0; j < 3; j++){
       value = puzzle->grid[(row * 3) + i][(column * 3) + j];
+
       // if this is a non-0 (ie non empty) value
       if (value != 0){
+
         // if we haven't seen this value before
         if (check[value - 1] == 0){
+
           // denote that value as seen by setting its tracker to 1, we value-1 to convert to index on 0
           check[value - 1] = 1;
         }
+
         // else if we have seen it, this isn't a valid square
         else{
           return false;
@@ -447,18 +464,24 @@ bool checkPossible(puzzle_t* puzzle, int row, int column, int n) {
 
   // copy the value currently in the coordinate
   int value = puzzleGetTile(puzzle, row, column);
+
   // set the coordinate to the value you want to try
   puzzleSetTile(puzzle, row, column, n);
+
   // if the tile is valid with the new value
   if (puzzleValidTile(puzzle, row, column)) {
+
     // reset the value
     puzzleSetTile(puzzle, row, column, value);
+
     // return true to tell user this is a possible entry
     return true;
   }
+
   else {
     // reset the value
     puzzleSetTile(puzzle, row, column, value);
+
     // return false to tell user this isn't a possible entry
     return false;
   }
@@ -480,8 +503,10 @@ puzzleSolved(puzzle_t* puzzle){
   // check to make sure no tile is empty
   for (int i = 0; i < 9; i++){
     for (int j = 0; j < 9; j++){
+
       // if we find an empty tile, ie 0
       if (puzzle->grid[i][j] == 0){
+
         // return false as the puzzle isn't solved
         return false;
       }
@@ -499,9 +524,14 @@ puzzleSolved(puzzle_t* puzzle){
 void
 puzzleCopy(puzzle_t* puzzle1, puzzle_t* puzzle2){
 
+  // check that both puzzles exist
   if (puzzle1 != NULL && puzzle2 != NULL){
+
+    // loop through all tiles
     for (int i = 0; i < 9; i++){
       for (int j = 0; j < 9; j++){
+
+        // set tile as whatever the other tile is
         puzzleSetTile(puzzle2, i, j, puzzleGetTile(puzzle1, i, j));
       }
     }
@@ -516,17 +546,20 @@ puzzleCopy(puzzle_t* puzzle1, puzzle_t* puzzle2){
 puzzle_t*
 puzzleCompare(puzzle_t* puzzle1, puzzle_t* puzzle2){
 
+  // check for puzzles
   if (puzzle1 == NULL || puzzle2 == NULL){
     fprintf(stderr, "puzzle passed to puzzleComapre is NULL.\n");
     return NULL;
   }
 
+  // create new puzzle
   puzzle_t* compare = puzzleNew();
   if (compare == NULL){
     fprintf(stderr, "Error creating compare puzzle.\n");
     return NULL;
   }
 
+  // grab each puzzle tile and check it, if same set to 0, if not, set to 1
   for (int i = 0; i < 9; i++){
     for (int j = 0; j < 9; j++){
       if (puzzleGetTile(puzzle1, i, j) == puzzleGetTile(puzzle2, i, j)){

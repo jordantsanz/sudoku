@@ -59,5 +59,5 @@ void swap(list_t* list, int i, int j);
 /* Set the randomizing seed for the start of the program based on time
 * Then changes the randomizing seed throughout the program
 */
-void set_seed();
+void set_seed(int time);
 void reset_seed(int num);

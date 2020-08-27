@@ -4,7 +4,7 @@
 # CS50, Summer 2020
 
 # object files, and the target library
-OBJS = ../solve/solve.c ../create/create.c ../common/list.c ../common/puzzle.c ../libcs50/file.c ../libcs50/memory.c ./helloworld.c
+OBJS = ../solve/solve.c ../create/create.c ../common/list.c ../common/puzzle.c ../libcs50/file.c ../libcs50/memory.c
 LIB = sudokumodule.so
 
 CFLAGS = -fPIC -shared
