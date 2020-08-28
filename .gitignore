@@ -6,3 +6,4 @@ TIMELINE.md
 __pycache__
 *.so
 loadtest.py
+cs1lib.pyc
