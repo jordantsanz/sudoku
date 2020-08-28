@@ -8,7 +8,7 @@ To build, run `make`.
 
 To clean up, run `make clean`.
 
-To test, run `make test`.
+To test, run `make valgrind`.
 
 To run executable in the top level directory (the one this read me is in), run `./sudoku`.
 
