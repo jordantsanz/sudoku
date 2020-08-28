@@ -12,9 +12,9 @@
 #include "solve.h"
 #include "../common/puzzle.h"
 
-int solve(puzzle_t* puzzle, puzzle_t* solvedHolder, int solved_count, FILE* fp) 
+int solve(puzzle_t* puzzle, puzzle_t* solvedHolder, int solved_count) 
 {
-    if (puzzle == NULL || fp == NULL) {
+    if (puzzle == NULL) {
         fprintf(stderr, "Invalid NULL arguments passed into solve function\n");
         exit(1);
     }
@@ -35,7 +35,7 @@ int solve(puzzle_t* puzzle, puzzle_t* solvedHolder, int solved_count, FILE* fp)
 
                         // if the puzzle doesn't already have multiple solutions than recurse with this more filled in puzzle
                         if (solved_count < 2) {
-                            solved_count = solve(puzzle, solvedHolder, solved_count, fp);
+                            solved_count = solve(puzzle, solvedHolder, solved_count);
                         }
 
                         // if we get back to here then solution has been found so set back to 0

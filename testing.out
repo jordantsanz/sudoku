@@ -29,6 +29,11 @@ gcc -Wall -pedantic -std=c11 -ggdb -I../../libcs50 -I../../common   -c -o create
 gcc -Wall -pedantic -std=c11 -ggdb -I../../libcs50 -I../../common   -c -o ../../create/create.o ../../create/create.c
 gcc -Wall -pedantic -std=c11 -ggdb -I../../libcs50 -I../../common createtest.o ../../create/create.o ../../solve/solve.o ../../common/common.a ../../libcs50/libcs50.a -lm -o createtest
 make[2]: Leaving directory '/net/ifs-users/moose/cs50/project/test/createtest'
+make fuzz
+make[2]: Entering directory '/net/ifs-users/moose/cs50/project/test'
+gcc -Wall -pedantic -std=c11 -ggdb -I./libcs50 -I./common   -c -o fuzz.o fuzz.c
+gcc -Wall -pedantic -std=c11 -ggdb -I./libcs50 -I./common fuzz.o ../solve/solve.o ../create/create.o ../common/puzzle.o ../libcs50/libcs50.a ../common/common.a -lm -o fuzz
+make[2]: Leaving directory '/net/ifs-users/moose/cs50/project/test'
 make[1]: Leaving directory '/net/ifs-users/moose/cs50/project/test'
 make -C create
 make[1]: Entering directory '/net/ifs-users/moose/cs50/project/create'
@@ -41,10 +46,6 @@ make[1]: Leaving directory '/net/ifs-users/moose/cs50/project/solve'
 make sudoku
 make[1]: Entering directory '/net/ifs-users/moose/cs50/project'
 gcc -Wall -pedantic -std=c11 -ggdb -I./libcs50 -I./common   -c -o sudoku.o sudoku.c
-sudoku.c: In function ‘space’:
-sudoku.c:82:14: warning: implicit declaration of function ‘fileno’ [-Wimplicit-function-declaration]
-   82 |   if (isatty(fileno(stdin))) {
-      |              ^~~~~~
 gcc -Wall -pedantic -std=c11 -ggdb -I./libcs50 -I./common sudoku.o solve/solve.o create/create.o common/puzzle.o common/list.o libcs50/file.o ./libcs50/libcs50.a ./common/common.a -lm -o sudoku
 make[1]: Leaving directory '/net/ifs-users/moose/cs50/project'
 make -C test valgrind
@@ -61,14 +62,18 @@ make -C createtest
 make[2]: Entering directory '/net/ifs-users/moose/cs50/project/test/createtest'
 make[2]: 'createtest' is up to date.
 make[2]: Leaving directory '/net/ifs-users/moose/cs50/project/test/createtest'
+make fuzz
+make[2]: Entering directory '/net/ifs-users/moose/cs50/project/test'
+make[2]: 'fuzz' is up to date.
+make[2]: Leaving directory '/net/ifs-users/moose/cs50/project/test'
 make -C puzzletest valgrind
 make[2]: Entering directory '/net/ifs-users/moose/cs50/project/test/puzzletest'
 valgrind --leak-check=full --show-leak-kinds=all -s ./puzzletest
-==1421263== Memcheck, a memory error detector
-==1421263== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==1421263== Using Valgrind-3.16.0 and LibVEX; rerun with -h for copyright info
-==1421263== Command: ./puzzletest
-==1421263== 
+==1262075== Memcheck, a memory error detector
+==1262075== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==1262075== Using Valgrind-3.16.0 and LibVEX; rerun with -h for copyright info
+==1262075== Command: ./puzzletest
+==1262075== 
 Too many lines in source file.
 Too few lines in source file.
 Too many entries in line 0.
@@ -151,23 +156,23 @@ Solved Copy:
 9 6 1 5 3 7 2 8 4
 2 8 7 4 1 9 6 3 5
 3 4 5 2 8 6 1 7 9
-==1421263== 
-==1421263== HEAP SUMMARY:
-==1421263==     in use at exit: 0 bytes in 0 blocks
-==1421263==   total heap usage: 165 allocs, 165 frees, 94,098 bytes allocated
-==1421263== 
-==1421263== All heap blocks were freed -- no leaks are possible
-==1421263== 
-==1421263== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==1262075== 
+==1262075== HEAP SUMMARY:
+==1262075==     in use at exit: 0 bytes in 0 blocks
+==1262075==   total heap usage: 165 allocs, 165 frees, 94,098 bytes allocated
+==1262075== 
+==1262075== All heap blocks were freed -- no leaks are possible
+==1262075== 
+==1262075== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 make[2]: Leaving directory '/net/ifs-users/moose/cs50/project/test/puzzletest'
 make -C solvetest valgrind
 make[2]: Entering directory '/net/ifs-users/moose/cs50/project/test/solvetest'
 valgrind --leak-check=full --show-leak-kinds=all -s ./solvetest
-==1421265== Memcheck, a memory error detector
-==1421265== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==1421265== Using Valgrind-3.16.0 and LibVEX; rerun with -h for copyright info
-==1421265== Command: ./solvetest
-==1421265== 
+==1262078== Memcheck, a memory error detector
+==1262078== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==1262078== Using Valgrind-3.16.0 and LibVEX; rerun with -h for copyright info
+==1262078== Command: ./solvetest
+==1262078== 
 Puzzle file does not contain a valid sudoku puzzle.
 5 3 4 6 7 8 9 1 2
 6 7 2 1 9 5 3 4 8
@@ -210,66 +215,81 @@ ran test 3
 4 3 1 5 7 2 6 8 9
 9 7 2 4 8 6 3 5 1
 ran test 4
-==1421265== 
-==1421265== HEAP SUMMARY:
-==1421265==     in use at exit: 0 bytes in 0 blocks
-==1421265==   total heap usage: 125 allocs, 125 frees, 39,846 bytes allocated
-==1421265== 
-==1421265== All heap blocks were freed -- no leaks are possible
-==1421265== 
-==1421265== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==1262078== 
+==1262078== HEAP SUMMARY:
+==1262078==     in use at exit: 0 bytes in 0 blocks
+==1262078==   total heap usage: 125 allocs, 125 frees, 39,846 bytes allocated
+==1262078== 
+==1262078== All heap blocks were freed -- no leaks are possible
+==1262078== 
+==1262078== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 make[2]: Leaving directory '/net/ifs-users/moose/cs50/project/test/solvetest'
 make -C createtest valgrind
 make[2]: Entering directory '/net/ifs-users/moose/cs50/project/test/createtest'
 valgrind --leak-check=full --show-leak-kinds=all -s ./createtest
-==1421269== Memcheck, a memory error detector
-==1421269== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==1421269== Using Valgrind-3.16.0 and LibVEX; rerun with -h for copyright info
-==1421269== Command: ./createtest
-==1421269== 
+==1262080== Memcheck, a memory error detector
+==1262080== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==1262080== Using Valgrind-3.16.0 and LibVEX; rerun with -h for copyright info
+==1262080== Command: ./createtest
+==1262080== 
 Cannot remove that many tiles. 
 Number of sols in 1: 1 
 Number of sols in 2: 1 
 Number of sols in 3: 1 
-==1421269== 
-==1421269== HEAP SUMMARY:
-==1421269==     in use at exit: 0 bytes in 0 blocks
-==1421269==   total heap usage: 2,562 allocs, 2,562 frees, 112,212 bytes allocated
-==1421269== 
-==1421269== All heap blocks were freed -- no leaks are possible
-==1421269== 
-==1421269== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==1262080== 
+==1262080== HEAP SUMMARY:
+==1262080==     in use at exit: 0 bytes in 0 blocks
+==1262080==   total heap usage: 2,688 allocs, 2,688 frees, 117,764 bytes allocated
+==1262080== 
+==1262080== All heap blocks were freed -- no leaks are possible
+==1262080== 
+==1262080== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 make[2]: Leaving directory '/net/ifs-users/moose/cs50/project/test/createtest'
+valgrind --leak-check=full --show-leak-kinds=all -s ./fuzz 100
+==1262167== Memcheck, a memory error detector
+==1262167== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==1262167== Using Valgrind-3.16.0 and LibVEX; rerun with -h for copyright info
+==1262167== Command: ./fuzz 100
+==1262167== 
+Passed 100 fuzz tests.
+==1262167== 
+==1262167== HEAP SUMMARY:
+==1262167==     in use at exit: 0 bytes in 0 blocks
+==1262167==   total heap usage: 80,417 allocs, 80,417 frees, 3,255,600 bytes allocated
+==1262167== 
+==1262167== All heap blocks were freed -- no leaks are possible
+==1262167== 
+==1262167== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 make[1]: Leaving directory '/net/ifs-users/moose/cs50/project/test'
 valgrind --leak-check=full --show-leak-kinds=all -s ./sudoku create
-==1421270== Memcheck, a memory error detector
-==1421270== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==1421270== Using Valgrind-3.16.0 and LibVEX; rerun with -h for copyright info
-==1421270== Command: ./sudoku create
-==1421270== 
-6 7 1 0 0 0 9 3 5
-0 0 5 9 0 0 1 0 0
-0 0 0 0 0 1 7 2 0
-8 9 3 0 2 4 0 7 1
-0 0 4 0 8 0 0 0 3
-0 0 7 1 9 0 0 0 0
-5 0 6 0 7 2 8 1 0
-0 4 2 8 0 0 0 6 0
-0 0 8 0 3 9 5 4 2
-==1421270== 
-==1421270== HEAP SUMMARY:
-==1421270==     in use at exit: 0 bytes in 0 blocks
-==1421270==   total heap usage: 708 allocs, 708 frees, 37,044 bytes allocated
-==1421270== 
-==1421270== All heap blocks were freed -- no leaks are possible
-==1421270== 
-==1421270== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==1270703== Memcheck, a memory error detector
+==1270703== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==1270703== Using Valgrind-3.16.0 and LibVEX; rerun with -h for copyright info
+==1270703== Command: ./sudoku create
+==1270703== 
+8 0 5 0 9 3 1 7 2
+7 1 0 0 0 2 0 5 0
+0 0 3 0 1 0 0 0 0
+0 2 0 7 5 0 0 1 9
+0 0 4 8 0 9 0 2 6
+5 9 8 0 2 0 0 4 7
+9 5 7 0 0 0 6 0 0
+0 0 2 0 0 0 0 0 0
+0 0 1 9 7 5 2 8 4
+==1270703== 
+==1270703== HEAP SUMMARY:
+==1270703==     in use at exit: 0 bytes in 0 blocks
+==1270703==   total heap usage: 648 allocs, 648 frees, 34,164 bytes allocated
+==1270703== 
+==1270703== All heap blocks were freed -- no leaks are possible
+==1270703== 
+==1270703== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 valgrind --leak-check=full --show-leak-kinds=all -s ./sudoku solve < ./examplepuzzles/puzzle1.txt
-==1421272== Memcheck, a memory error detector
-==1421272== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==1421272== Using Valgrind-3.16.0 and LibVEX; rerun with -h for copyright info
-==1421272== Command: ./sudoku solve
-==1421272== 
+==1270706== Memcheck, a memory error detector
+==1270706== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==1270706== Using Valgrind-3.16.0 and LibVEX; rerun with -h for copyright info
+==1270706== Command: ./sudoku solve
+==1270706== 
 5 3 4 6 7 8 9 1 2
 6 7 2 1 9 5 3 4 8
 1 9 8 3 4 2 5 6 7
@@ -279,11 +299,11 @@ valgrind --leak-check=full --show-leak-kinds=all -s ./sudoku solve < ./examplepu
 9 6 1 5 3 7 2 8 4
 2 8 7 4 1 9 6 3 5
 3 4 5 2 8 6 1 7 9
-==1421272== 
-==1421272== HEAP SUMMARY:
-==1421272==     in use at exit: 0 bytes in 0 blocks
-==1421272==   total heap usage: 34 allocs, 34 frees, 18,002 bytes allocated
-==1421272== 
-==1421272== All heap blocks were freed -- no leaks are possible
-==1421272== 
-==1421272== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==1270706== 
+==1270706== HEAP SUMMARY:
+==1270706==     in use at exit: 0 bytes in 0 blocks
+==1270706==   total heap usage: 34 allocs, 34 frees, 18,002 bytes allocated
+==1270706== 
+==1270706== All heap blocks were freed -- no leaks are possible
+==1270706== 
+==1270706== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

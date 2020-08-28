@@ -59,7 +59,7 @@ puzzle_t* create(int num_tiles)
     puzzleRemoveTiles(puzzle, num_tiles);
 
     // check to make sure one solution only:
-    if(solve(puzzle, NULL, 0, stdout) != 1){
+    if(solve(puzzle, NULL, 0) != 1){
         printf("There wasn't only one solution. \n");
         puzzleDelete(puzzle);
         return NULL;
@@ -143,7 +143,7 @@ void puzzleRemoveTiles(puzzle_t* puzzle, int num_tiles)
         copy = assertp(puzzleNew(), "Could not allocate memory for puzzle copy.\n");
         puzzleCopy(puzzle, copy);
         
-        if(solve(copy, NULL, 0, stdin) != 1){  // if not only one solution
+        if(solve(copy, NULL, 0) != 1){  // if not only one solution
             puzzleSetTile(puzzle, x, y, tile); // reset tile
         }
 
