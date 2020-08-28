@@ -1,4 +1,4 @@
-# CS50 Final Project - Create
+# CS50 Final Project - Solve
 ## Alex Hamel, James Verschleiser, Jordan Sanz
 
 ### solve

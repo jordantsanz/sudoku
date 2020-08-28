@@ -25,7 +25,7 @@ int main()
     puzzle_t* puzzle = puzzleNew();
     puzzle_t* solved = puzzleNew();
     puzzleLoad(puzzle, Fp);
-    solve(puzzle, solved, 0, stdout);
+    solve(puzzle, solved, 0);
     fclose(Fp);
     puzzlePrint(solved, stdout);
     puzzleDelete(puzzle);
@@ -35,7 +35,7 @@ int main()
     // test on empty puzzle
     puzzle = puzzleNew();
     solved = puzzleNew();
-    solve(puzzle, solved, 0, stdout);
+    solve(puzzle, solved, 0);
     puzzlePrint(solved, stdout);
     puzzleDelete(puzzle);
     puzzleDelete(solved);
@@ -50,7 +50,7 @@ int main()
     puzzle = puzzleNew();
     solved = puzzleNew();
     puzzleLoad(puzzle, Fp2);
-    solve(puzzle, solved, 0, stdout);
+    solve(puzzle, solved, 0);
     fclose(Fp2);
     fprintf(stdout, "Below should be all 0's:\n");
     puzzlePrint(solved, stdout);
@@ -67,7 +67,7 @@ int main()
     puzzle = puzzleNew();
     solved = puzzleNew();
     puzzleLoad(puzzle, Fp3);
-    solve(puzzle, solved, 0, stdout);
+    solve(puzzle, solved, 0);
     fclose(Fp3);
     puzzlePrint(solved, stdout);
     puzzleDelete(puzzle);

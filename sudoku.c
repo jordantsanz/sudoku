@@ -23,6 +23,9 @@
 void interface();
 static void space();
 
+// because not in stdio.h
+int fileno(FILE *stream);
+
 int main(const int argc, const char *argv[]) 
 {
     if (argc < 2) {
@@ -55,7 +58,7 @@ void interface(char* arg)
         puzzle_t* toSolve = assertp(puzzleNew(), "Error creating an empty sudoku puzzle.\n");
         puzzleLoad(toSolve, stdin);
         puzzle_t* solvedHolder = assertp(puzzleNew(), "Error creating an empty sudoku puzzle.\n");
-        int solvedCount = solve(toSolve, solvedHolder, 0, stdout);
+        int solvedCount = solve(toSolve, solvedHolder, 0);
         space();
         if (solvedCount > 1){
             fprintf(stdout, "More than one solution. Here is one possible solution.\n");

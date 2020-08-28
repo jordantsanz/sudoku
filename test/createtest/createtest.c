@@ -27,7 +27,7 @@ int main(const int argc, const char* argv[])
     if (argc == 1){
         num_tiles = -1;
     }
-    else if (argc == 2){
+    else if (argc >= 2){
         num_tiles = atoi(argv[1]);
     }
     else{
@@ -65,13 +65,13 @@ int main(const int argc, const char* argv[])
     puzzle_t* puzzle2Solve = assertp(puzzleNew(), "Could not allocate memory for puzzle2Solve.\n");
     puzzle_t* puzzle3Solve = assertp(puzzleNew(), "Could not allocate memory for puzzle3Solve.\n");
     // try and solve the puzzles
-    int count1 = solve(puzzle, puzzle1Solve, 0, fp3);
+    int count1 = solve(puzzle, puzzle1Solve, 0);
     puzzlePrint(puzzle1Solve, fp3);
     puzzleDelete(puzzle1Solve);
-    int count2 = solve(puzzle2, puzzle2Solve, 0, fp4);
+    int count2 = solve(puzzle2, puzzle2Solve, 0);
     puzzlePrint(puzzle2Solve, fp4);
     puzzleDelete(puzzle2Solve);
-    int count3 = solve(puzzle3, puzzle3Solve, 0, fp6);
+    int count3 = solve(puzzle3, puzzle3Solve, 0);
     puzzlePrint(puzzle3Solve, fp6);
     puzzleDelete(puzzle3Solve);
 
@@ -83,6 +83,7 @@ int main(const int argc, const char* argv[])
     puzzleDelete(puzzle);
     puzzleDelete(puzzle2);
     puzzleDelete(puzzle3);
+    
 }
 
 // function taken from https://stackoverflow.com/questions/3930363/implement-time-delay-in-c
