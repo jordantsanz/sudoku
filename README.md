@@ -8,7 +8,9 @@ To build, run `make`.
 
 To clean up, run `make clean`.
 
-To test, run `make test`.
+To test, run `make valgrind`.
+
+Master contains a copy of the basic submission per the rubric. The same can be found in baseProjectSubmit. Some code had to be changed to support the UI, so you can find our UI/Extra Credit in the branch titled ExtraCredit.
 
 To run executable in the top level directory (the one this read me is in), run `./sudoku`.
 
